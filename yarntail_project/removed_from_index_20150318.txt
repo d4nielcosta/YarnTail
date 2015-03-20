@@ -1,0 +1,101 @@
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="row placeholders">
+       <div class="panel panel-primary">
+           <div class="panel-heading">
+               <h3 class="panel-title">Trending Patterns</h3>
+               {% if trendingPatterns %}
+                <ul class="list-group">
+                   {% for pattern in trendingPatterns %}
+                      <li class ="list-group-item"><a href="{{page.url}}">{{ page.title }}</a></li>
+                   {% endfor %}
+                </ul>
+               {% else %}
+                <li class="list-group-item"><strong style="color:blue">There are no patterns present.</strong></li>
+               {% endif %}
+           </div>
+       </div>
+    </div>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+{% block side_block %}
+
+{% csrf_token %}
+<!-- Display the search form elements here -->
+<input class="form-control" type="text" size="50" name="query" value="{{query}}" id="query" />
+<input class="btn btn-primary" type="submit" name="submit" value="Search" />
+    <div class="panel">
+        {% if qs %}
+            <div class="panel-heading">
+                <h3 class="panel-title">Results</h3>
+                <!-- Display search results in an ordered list -->
+                <div class="panel-body">
+                    <div class="list-group">
+
+                            {% for user in users %}
+                            <div class="list-group-item">
+                                {% if user == qs %}
+                                    <h4 class="list-group-item-heading"><a href="{% url 'profile' %}{{ user.username }}">{{ user.username }}</a></h4>
+                                {% else %}
+                                    <h4 class="list-group-item-heading">No user with that name present.</h4>
+                                {% endif %}
+                            </div>
+
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+
+
+<!--
+<h2>Functions:</h2><br />
+    <ul>
+    <li>+Search</li>
+    <li>+Trending</li>
+    <li>-Profile Pic</li>
+    <li>-Profile Name</li>
+    <li>-Likes</li>
+    <li>-Favorites</li>
+    <li>-Activity Feed</li>
+    <li>-Patterns Directory</li>
+    <li>-Upload New Pattern Link</li>
+    </ul>
+-->
+
+<!-- Static Files Reminder:
+{% load staticfiles %}
+<img src="{% static "images/rango.jpg" %}" alt="Picture of Rango" /> -->
+
+# Jake's
+#    trending_pattern_list = Pattern.objects.order_by('-views')[:5]
+#    latest_pattern_list = Pattern.objects.order_by()[:5]
+#    context_dict = {'trendingPattern': trending_pattern_list}
+
+
+    # Search
+    #trending

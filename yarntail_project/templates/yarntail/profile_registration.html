@@ -1,0 +1,39 @@
+{% extends 'yarntail/base.html' %}
+
+{% load staticfiles %}
+
+{% block body_block %}
+
+<div class="page-header">
+    <h1>Create a Profile</h1>
+</div>
+<div>
+
+    <form id="user_profile_form" method="post" action="/yarntail/add_profile/"
+          enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group" >
+            <p class="required"> <label for="id_first_name"> First Name: </label>
+                <input class="form-control"  id="id_first_name" maxlength="30" name="first_name" type="text"  placeholder="Enter first name"/></p>
+        </div>
+        <div class="form-group" >
+            <p class="required"> <label for="id_last_name"> Last Name: </label>
+                <input class="form-control"  id="id_last_name" maxlength="30" name="last_name" type="text"  placeholder="Enter last name"/></p>
+        </div>
+        <div class="form-group" >
+            <p class="required"> <label for="id_date_of_birth"> Date Of Birth </label>
+                <input class="form-control"  id="id_date_of_birth" name="date_of_birth" type="date"  placeholder="dob"/></p>
+        </div>
+        <div class="form-group">
+            <p>
+                    <input id="id_picture" type="file" class="" name="picture">
+                </p>
+        </div>
+
+
+
+        <button class="btn btn-primary" type="submit" name="submit">Complete profile</button>
+    </form>
+</div>
+{% endblock %}

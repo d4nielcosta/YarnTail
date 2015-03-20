@@ -1,0 +1,43 @@
+{% extends 'yarntail/base.html' %}
+
+{% load staticfiles %}
+
+{% block body_block %}
+
+
+<div class="page-header">
+    <h1> <strong> Hello, {{ userprofile.first_name }} {{userprofile.last_name }} </strong> @{{user.username }} </h1>
+</div>
+
+<div>
+    <div id="left">
+        <a href="{% url 'edit_profile' %}"> Change Your Information</a></p>
+
+        <p><strong> Email address:</strong> {{ user.email }}</p>
+        <p><strong> First name: </strong> {{ userprofile.first_name }}</p>
+        <p><strong> Last name: </strong> {{ userprofile.last_name }}</p>
+        <p><strong> Date Of Birth: </strong> {{ userprofile.date_of_birth }}</p>
+
+        <br/>
+        <h2>My Patterns</h2>
+        {% if patterns %}
+        <ul class="list-group">
+            {% for pattern in patterns %}
+            <li class="list-group-item"><a
+                    href="/yarntail/pattern/{{user.username}}/{{pattern.slug}}">{{ pattern }} (Views: {{pattern.views}})</a></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+    </div>
+    {% if userprofile.picture %}
+    <div style="height:400px; width:500px" id="right">
+        <img src="{{ userprofile.picture.url }}" style="max-width:100%;max-height:100%;margin:auto;display:block" />
+    </div>
+    {% endif %}
+
+
+    </p>
+
+</div>
+{% endblock %}

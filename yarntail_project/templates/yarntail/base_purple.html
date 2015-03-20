@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+{% load staticfiles %}
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="http://getbootstrap.com/favicon.ico">
+
+    <title>YarnTail - {% block title %}Welcome to Yarntail!{% endblock %}</title>
+
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://getbootstrap.com/examples/dashboard/dashboard.css" rel="stylesheet">
+  ls
+
+    <!--[if lt IE 9]><
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="background-color:purple;">
+        <a class="pull-left" href="{% url 'index' %}">
+                <span class="pull-left">
+                    <img src="{% static 'images/LogoTest2.jpg' %}" alt="YarnTail" style="margin-top:0px; height:75px; width:171px;"/>
+                </span>
+        </a>
+        <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              {% if user.is_authenticated %}
+              <li><a href="{% url 'auth_logout' %}?next=/yarntail/" style="color:white"><h4>Log Out</h4></a></li>
+              <li><a href="{% url 'profile' %}" style="color:white"><h4>Profile</h4></a></li>
+              {% else %}
+              <li><a href="{% url 'registration_register' %}" style="color:white"><h4>Sign Up</h4></a></li>
+              <li><a href="{% url 'auth_login' %}" style="color:white"><h4>Log In</h4></a></li>
+              {% endif %}
+
+              <li><a href="{% url 'about' %}" style="color:white"><h4>About Us</h4></a></li>
+              {% block toolBar %} {% endblock%}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+                {% block side_block %}
+            <br/>
+            <a href="{% url 'upload_instructions' %}"> Upload Instructions </a><br/>
+            <a href="{% url 'pattern_instructions' %}"> Pattern Instructions </a><br/>
+            {% endblock %}
+
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+           <div>
+                {% block body_block %}{% endblock %}
+                </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>

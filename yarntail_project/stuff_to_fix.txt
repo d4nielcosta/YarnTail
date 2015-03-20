@@ -1,0 +1,8 @@
+PRIORITY:
+	FIX Big Description Wrap Index
+	FIX size description box -- add new pattern
+	FIX About Us Position in base template
+
+Pattern Redirect: we want the pattern, not index
+
+About us: something prettier
