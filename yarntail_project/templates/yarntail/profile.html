@@ -19,7 +19,7 @@
         <p><strong> Date Of Birth: </strong> {{ userprofile.date_of_birth }}</p>
 
         <br/>
-        <h2>My Patterns</h2>
+        <h2>Patterns</h2>
         {% if patterns %}
         <ul class="list-group">
             {% for pattern in patterns %}
@@ -27,6 +27,8 @@
                     href="/yarntail/pattern/{{user.username}}/{{pattern.slug}}">{{ pattern }} (Views: {{pattern.views}})</a></li>
             {% endfor %}
         </ul>
+        {% else %}
+        No patterns yet...
         {% endif %}
 
     </div>

@@ -23,9 +23,6 @@ from models import *
 def index_popular(request):
     context_dict = {}
 
-    latest_patterns = Pattern.objects.filter().order_by('-creation_date')[:20]
-    context_dict['latest_patterns'] = latest_patterns
-
     popular_patterns = Pattern.objects.filter().order_by('-views')[:20]
     context_dict['popular_patterns'] = popular_patterns
 
@@ -36,9 +33,6 @@ def index_latest(request):
 
     latest_patterns = Pattern.objects.filter().order_by('-creation_date')[:20]
     context_dict['latest_patterns'] = latest_patterns
-
-    popular_patterns = Pattern.objects.filter().order_by('-views')[:20]
-    context_dict['popular_patterns'] = popular_patterns
 
     return render(request, 'yarntail/index_latest.html', context_dict)
 
@@ -86,7 +80,7 @@ def register_profile(request):
                 profile.save()
         else:
             print form.errors
-        return index(request)
+        return index_popular(request)
     else:
         form = UserProfileForm(request.GET)
 
@@ -117,7 +111,7 @@ def edit_profile(request):
         else:
             print profileForm.errors
 
-        return index(request)
+        return index_popular(request)
     else:
         profileForm = UserProfileForm(request.GET)
 
@@ -156,10 +150,10 @@ def add_pattern(request):
             else:
                 print form.errors
             #Fix Return. We want to return pattern
-            return index(request)
+            return index_popular(request)
         return render(request, 'yarntail/add_pattern.html', {'pattern_form': form})
     else:
-        return redirect(index(request))
+        return redirect(index_popular(request))
 
 
 def pattern_instructions(request):
