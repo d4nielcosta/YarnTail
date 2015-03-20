@@ -1,0 +1,41 @@
+{% extends 'yarntail/base.html' %}
+
+{% block body_block %}
+
+<div class="page-header">
+    <h1>Welcome to YarnTail!</h1>
+</div>
+
+<h4>A warm welcome from the YarnTail team! Here's some patterns to get you started!</h4>
+
+<ul class="nav nav-pills">
+  <li role="presentation" id="popular" class="active"><a href="{% url 'index_popular' %}">Popular Patterns</a></li>
+  <li role="presentation"><a href="{% url 'index_latest' %}">Latest Patterns</a></li>
+</ul>
+
+
+        <h2>Popular Patterns</h2>
+        {% if popular_patterns %}
+        <ul class="list-group">
+            {% for pattern in popular_patterns %}
+            <li class="list-group-item"><a
+                    href="/yarntail/pattern/{{pattern.user}}/{{pattern.slug}}">
+                {{ pattern }} -- @{{ pattern.user }}
+                <p style="font-size:15px">{{ pattern.description }}
+                <br/>Views: {{pattern.views }} || {{pattern.creation_date }}</p>
+                </a></li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>Oops! Sorry but looks like there aren't any patterns available.</p>
+        {% endif %}
+
+    </div>
+
+      
+
+</div>
+
+
+
+{% endblock %}

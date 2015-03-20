@@ -8,9 +8,12 @@
 
 <h4>A warm welcome from the YarnTail team! Here's some patterns to get you started!</h4>
 
-<div id="float">
-    <div id="left">
+<ul class="nav nav-pills">
+  <li role="presentation" id="popular"><a href="{% url 'index_popular' %}">Popular Patterns</a></li>
+  <li role="presentation" id="latest" class="active"><a href="{% url 'index_latest' %}">Latest Patterns</a></li>
+</ul>
 
+    <div>
         <h2>Latest Patterns</h2>
         {% if latest_patterns %}
         <ul class="list-group">
@@ -28,29 +31,6 @@
         {% endif %}
 
     </div>
-
-    <div id="right">
-
-
-        <h2>Popular Patterns</h2>
-        {% if popular_patterns %}
-        <ul class="list-group">
-            {% for pattern in popular_patterns %}
-            <li class="list-group-item"><a
-                    href="/yarntail/pattern/{{pattern.user}}/{{pattern.slug}}">
-                {{ pattern }} -- @{{ pattern.user }}
-                <p style="font-size:15px">{{ pattern.description }}
-                <br/>Views: {{pattern.views }} || {{pattern.creation_date }}</p>
-                </a></li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <p>Oops! Sorry but looks like there aren't any patterns available.</p>
-        {% endif %}
-
-    </div>
-
-
 
 
 

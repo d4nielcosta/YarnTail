@@ -20,7 +20,7 @@ from models import *
 """
 
 
-def index(request):
+def index_popular(request):
     context_dict = {}
 
     latest_patterns = Pattern.objects.filter().order_by('-creation_date')[:20]
@@ -29,7 +29,18 @@ def index(request):
     popular_patterns = Pattern.objects.filter().order_by('-views')[:20]
     context_dict['popular_patterns'] = popular_patterns
 
-    return render(request, 'yarntail/index.html', context_dict)
+    return render(request, 'yarntail/index_popular.html', context_dict)
+
+def index_latest(request):
+    context_dict = {}
+
+    latest_patterns = Pattern.objects.filter().order_by('-creation_date')[:20]
+    context_dict['latest_patterns'] = latest_patterns
+
+    popular_patterns = Pattern.objects.filter().order_by('-views')[:20]
+    context_dict['popular_patterns'] = popular_patterns
+
+    return render(request, 'yarntail/index_latest.html', context_dict)
 
 
 def about(request):
