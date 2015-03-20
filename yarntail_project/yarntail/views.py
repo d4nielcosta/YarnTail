@@ -36,6 +36,14 @@ def index_latest(request):
 
     return render(request, 'yarntail/index_latest.html', context_dict)
 
+def index_all(request):
+    context_dict = {}
+
+    all_patterns = Pattern.objects.filter().order_by('-creation_date')
+    context_dict['patterns_all'] = all_patterns
+
+    return render(request, 'yarntail/index_all.html', context_dict)
+
 
 def about(request):
 
@@ -86,7 +94,7 @@ def register_profile(request):
 
     return render(request, 'yarntail/profile_registration.html', {'profile_form': form})
 
-
+@login_required
 def edit_profile(request):
     if request.method == "POST":
 
@@ -137,7 +145,7 @@ def pattern(request, username_slug, pattern_slug):
     context_dict['views'] = pattern.views
     return render(request, 'yarntail/pattern.html', context_dict)
 
-
+@login_required
 def add_pattern(request):
     if request.user.is_authenticated():
         form = PatternForm(request.GET)
