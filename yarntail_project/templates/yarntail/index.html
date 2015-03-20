@@ -16,7 +16,7 @@
         <ul class="list-group">
             {% for pattern in latest_patterns %}
             <li class="list-group-item"><a
-                    href="/yarntail/pattern/{{user.username}}/{{pattern.slug}}">
+                    href="/yarntail/pattern/{{pattern.user}}/{{pattern.slug}}">
                 {{ pattern }} -- @{{ pattern.user }}
                 <p style="font-size:15px">{{ pattern.description }}
                 <br/>Views: {{pattern.views }} || {{pattern.creation_date }}</p>
@@ -37,7 +37,7 @@
         <ul class="list-group">
             {% for pattern in popular_patterns %}
             <li class="list-group-item"><a
-                    href="/yarntail/pattern/{{user.username}}/{{pattern.slug}}">
+                    href="/yarntail/pattern/{{pattern.user}}/{{pattern.slug}}">
                 {{ pattern }} -- @{{ pattern.user }}
                 <p style="font-size:15px">{{ pattern.description }}
                 <br/>Views: {{pattern.views }} || {{pattern.creation_date }}</p>
@@ -49,7 +49,6 @@
         {% endif %}
 
     </div>
-</div>
 
 
 
