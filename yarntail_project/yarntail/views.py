@@ -1,7 +1,7 @@
 import user
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from forms import UserForm, UserProfileForm, PatternForm
+from forms import UserForm, UserProfileForm, PatternForm, CommentForm
 from django.http import HttpResponse
 from django.db.models import Q
 from django.contrib.auth.models import User
@@ -35,7 +35,6 @@ def index(request):
 def about(request):
 
     return render(request, 'yarntail/about.html')
-
 
 @login_required
 def profile(request, username_slug):
@@ -115,13 +114,13 @@ def edit_profile(request):
 
     return render(request, 'yarntail/edit_profile.html', context_dict)
 
-
 def pattern(request, username_slug, pattern_slug):
     username = username_slug.lower()
     context_dict = {}
     profile = UserProfile.objects.get(slug=username)
     user = User.objects.get(user_profile=profile)
     pattern = Pattern.objects.get(user=user, slug=pattern_slug)
+    comment = Comment.objects.filter(pattern=pattern).order_by('-creation_date')
 
     print "got to increment statement"
     pattern.views += 1
@@ -130,7 +129,35 @@ def pattern(request, username_slug, pattern_slug):
     context_dict['user'] = user
     context_dict['pattern'] = pattern
     context_dict['views'] = pattern.views
+    context_dict['comment'] = comment
     return render(request, 'yarntail/pattern.html', context_dict)
+
+def comment(request, username_slug, pattern_slug):
+    username = username_slug.lower()
+    context_dict = {}
+    profile = UserProfile.objects.get(slug=username)
+    pattern = Pattern.objects.get(slug=pattern_slug)
+
+    context_dict['user'] = profile
+    context_dict['pattern'] = pattern
+
+    if request.user.is_authenticated():
+        form = CommentForm(request.GET)
+        if request.method == 'POST':
+            form = CommentForm(request.POST)
+
+            if form.is_valid():
+                comment = form.save(commit=False)
+                comment.user = User.objects.get(username=username_slug)
+                comment.pattern = Pattern.objects.get(slug=pattern_slug)
+                comment.save()
+            else:
+                print form.errors
+
+            return index(request)
+        return render(request, 'yarntail/comment.html', {'comment_form': form})
+    else:
+        return redirect(pattern(request, username_slug, pattern_slug))
 
 
 def add_pattern(request):

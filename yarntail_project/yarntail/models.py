@@ -39,6 +39,21 @@ class Pattern(models.Model):
         return self.title
 
 #Need to add comment once everything else is functional
+class Comment(models.Model):
+    user = models.ForeignKey(User, related_name='comments')
+    pattern = models.ForeignKey(Pattern, related_name='pattern')
+    creation_date = models.DateTimeField(auto_now_add=True)
+    comment_string = models.CharField(max_length=20000)
+  #  likes = models.PositiveIntegerField(default=0)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.creation_date)
+        super(Comment, self).save(*args, **kwargs)
+
+    def __unicode__(self):
+        return unicode(self.creation_date)
+
+
 
     # #name = models.CharField(max_length=128,
     #                         unique=True)  # in forms, prepend username before submitting "gertrude's rainbow gloves"

@@ -8,7 +8,26 @@ user and pattern have been passed in as 'user' and 'pattern'
 
 views = {{ views }}
 
+
 </div>
+
+<div>
+<hr>
+<h3>Comments:</h3>
+
+
+<ul>
+    {% for comments in comment %}
+        <li><strong>{{ comments.comment_string }}</strong></li>
+        Submitted by {{ comments.user }} on {{ comments.creation_date }}
+        <p />
+    {% endfor %}
+
+</ul>
+<hr>
+</div>
+
+
 
 
 {% endblock %}
