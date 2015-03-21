@@ -10,6 +10,8 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+
+PROJECT_DIRECTORY = os.getcwd()
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -85,9 +87,13 @@ USE_TZ = True
 TEMPLATE_PATH = os.path.join(BASE_DIR, 'templates')
 TEMPLATE_DIRS = (TEMPLATE_PATH,)
 
+STATIC_ROOT = 'static_dump'
+
 STATIC_PATH = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (STATIC_PATH,)
+
+
 
 #Media Files
 MEDIA_URL = '/media/'

@@ -1,6 +1,8 @@
 import user
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.forms import model_to_dict
+from django.shortcuts import render, redirect, render_to_response
+from django.http import JsonResponse
 from forms import UserForm, UserProfileForm, PatternForm
 from django.http import HttpResponse
 from django.db.models import Q
@@ -33,7 +35,6 @@ def index(request):
 
 
 def about(request):
-
     return render(request, 'yarntail/about.html')
 
 
@@ -87,7 +88,7 @@ def edit_profile(request):
 
         try:
             profile = UserProfile.objects.get(user=request.user)
-            profileForm = UserProfileForm(request.POST, instance = profile)
+            profileForm = UserProfileForm(request.POST, instance=profile)
         except:
             profileForm = UserProfileForm(request.POST)
 
@@ -144,7 +145,7 @@ def add_pattern(request):
                 pattern.save()
             else:
                 print form.errors
-            #Fix Return. We want to return pattern
+            # Fix Return. We want to return pattern
             return index(request)
         return render(request, 'yarntail/add_pattern.html', {'pattern_form': form})
     else:
@@ -152,23 +153,38 @@ def add_pattern(request):
 
 
 def pattern_instructions(request):
-
     return render(request, 'yarntail/pattern_instructions.html')
 
 
 def upload_instructions(request):
-
     return render(request, 'yarntail/upload_instructions.html')
 
 
-
 def search(request):
+    if request.method == "POST":
+        search_text = request.POST['search_text']
 
-    qs = User.objects.all()
-    qs = User.objects.get(username=request.user.username)
-    for term in query_name.split():
-        qs = qs.filter(Q(first_name__icontains=term) | Q(last_name__icontains=term))
-        return
+    else:
+        search_text = ''
 
-    return render(request, 'yarntail/search.html', qs)
+    patterns = Pattern.objects.filter(title__contains=search_text)
+    response = {}
+
+    for pattern in patterns:
+
+        response[pattern.title] = {pattern.slug : pattern.user.user_profile.slug}
+
+
+    return JsonResponse(response)
+
+
+def search_results(request, query=None):
+    context_dict = {}
+    if query:
+
+        patterns = Pattern.objects.filter(title__contains=query)
+
+        context_dict['patterns'] = patterns
+
+    return render(request, "yarntail/search_results.html", context_dict)
 

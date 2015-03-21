@@ -1,0 +1,26 @@
+{% extends 'yarntail/base.html' %}
+
+{% load staticfiles %}s
+
+{% block body_block %}
+
+    <div class="page-header">
+        <h1>Edit Profile</h1>
+    </div>
+
+    <div>
+
+        {% if patterns.count > 0 %}
+            {% for pattern in patterns %}
+                <li><a href="{% url "pattern" pattern.user.user_profile.slug pattern.slug %}">{{ pattern.title }}</a>
+                </li>
+            {% endfor %}
+        {% else %}
+            <li>No patterns match your search</li>
+        {% endif %}
+
+    </div>
+
+{% endblock %}
+
+
