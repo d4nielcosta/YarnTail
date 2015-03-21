@@ -22,7 +22,7 @@ $(function () {
 
 function searchSuccess(data, textStatus, jqXHR) {
 
-    $('#results').html(data);
+    $('#results').html(data); //could instead call typeahead substring matcher using data arg
 
 }
 

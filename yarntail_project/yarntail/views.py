@@ -165,23 +165,20 @@ def upload_instructions(request):
 def search(request):
     if request.method == "POST":
         search_text = request.POST['search_text']
-
     else:
         search_text = ''
-
-    patterns = get_patterns(max_results = 10, starts_with=search_text)
+    patterns = get_patterns(max_results = 10, contains=search_text)
     pattern_titles = []
     for pat in patterns:
-        pattern_titles = pat.title
+        pattern_titles += pat.title
+    print pattern_titles
+    return HttpResponse(pattern_titles)
 
-    return HttpResponse(pattern_titles, content_type="application/json")
-    #return JsonResponse(json.dumps(pattern_titles), safe=False)
 
-
-def get_patterns(max_results=0, starts_with=''):
+def get_patterns(max_results=0, contains=''):
     pattern_list = []
-    if starts_with:
-        pattern_list = Pattern.objects.filter(title__startswith=starts_with)
+    if contains:
+        pattern_list = Pattern.objects.filter(title__contains=contains)
     if max_results > 0:
         if len(pattern_list) > max_results:
             pattern_list = pattern_list[:max_results]
