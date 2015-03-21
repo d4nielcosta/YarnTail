@@ -13,13 +13,11 @@
     <form id="comment_form" method="post" action=".">
 
         {% csrf_token %}
-        {{ comment_form.as_p }}
 
-        <!--<div class="form-group" >-->
-            <!--<p class="required"> <label for="id_comment"> Comment </label>-->
-                <!--<input class="form-control"  id="id_comment" maxlength="20000" name="comment" type="text"  placeholder="Enter comment"/></p>-->
-        <!--</div>-->
-
+        <div class="form-group" >
+            <p class="required"> <label for="id_comment"> Comment </label>
+                <input class="form-control"  id="id_comment" maxlength="20000" name="comment_string" type="text"  placeholder="Enter comment"/></p>
+        </div>
 
 
         <button class="btn btn-primary" type="submit" name="submit">Add Comment</button>

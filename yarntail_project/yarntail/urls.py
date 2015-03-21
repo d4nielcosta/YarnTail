@@ -16,8 +16,6 @@ urlpatterns = patterns('',
                        url(r'^profile/(?P<username_slug>[\w\-]+)/$', views.profile, name='profile'),
                        url(r'add_profile/$', views.register_profile, name='add_profile'),
 
-                       url(r'^pattern/(?P<username_slug>[\w\-]+)/(?P<pattern_slug>[\w\-]+)/add_comment/$', views.comment, name='add_comment'),
-
                        #Pattern Related
                        url(r'^pattern/(?P<username_slug>[\w\-]+)/(?P<pattern_slug>[\w\-]+)/$', views.pattern, name='pattern'),
                        url(r'^pattern_instructions/$', views.pattern_instructions, name='pattern_instructions'),

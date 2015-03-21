@@ -144,17 +144,8 @@ def pattern(request, username_slug, pattern_slug):
     context_dict['views'] = pattern.views
 
     context_dict['comment'] = comment
-    return render(request, 'yarntail/pattern.html', context_dict)
 
-def comment(request, username_slug, pattern_slug):
-    username = username_slug.lower()
-    context_dict = {}
-    profile = UserProfile.objects.get(slug=username)
-    pattern = Pattern.objects.get(slug=pattern_slug)
-
-    context_dict['user'] = profile
-    context_dict['pattern'] = pattern
-
+    #Add Comment
     if request.user.is_authenticated():
         form = CommentForm(request.GET)
         if request.method == 'POST':
@@ -168,10 +159,8 @@ def comment(request, username_slug, pattern_slug):
             else:
                 print form.errors
 
-            return redirect('profile', profile.user)
-        return render(request, 'yarntail/comment.html', {'comment_form': form})
-    else:
-        return redirect(pattern(request, username_slug, pattern_slug))
+
+    return render(request, 'yarntail/pattern.html', context_dict)
 
 
 @login_required
