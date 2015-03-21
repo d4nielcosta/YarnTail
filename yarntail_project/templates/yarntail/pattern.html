@@ -12,7 +12,6 @@
 
     likes = {{ pattern.likes }}
 
-
 </div>
 
 <div>
@@ -26,7 +25,7 @@
                 <input class="form-control" id="id_comment" maxlength="20000" name="comment_string" type="text"
                        placeholder="Enter comment"/>
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button">Share</button>
+        <button class="btn btn-default" type="submit" name="submit"> Share </button>
           <br/>
       </span>
             </div>
@@ -43,7 +42,7 @@
         {% for comments in comment %}
         <p>
             <strong>{{ comments.comment_string }}</strong><br/>
-            Submitted by {{ comments.user }} on {{ comments.creation_date }}
+            <i>@{{ comments.user }} on {{ comments.creation_date }}</i>
 
         <p/>
 
@@ -53,3 +52,4 @@
 </div>
 
 {% endblock %}
+
