@@ -88,7 +88,7 @@ def register_profile(request):
                 profile.save()
         else:
             print form.errors
-        return index_popular(request)
+        return render(request, 'registration/registration_complete.html')
     else:
         form = UserProfileForm(request.GET)
 
@@ -119,7 +119,7 @@ def edit_profile(request):
         else:
             print profileForm.errors
 
-        return index_popular(request)
+        return redirect('profile', profile.user)
     else:
         profileForm = UserProfileForm(request.GET)
 
@@ -143,6 +143,7 @@ def pattern(request, username_slug, pattern_slug):
     context_dict['user'] = user
     context_dict['pattern'] = pattern
     context_dict['views'] = pattern.views
+
     return render(request, 'yarntail/pattern.html', context_dict)
 
 @login_required
@@ -157,8 +158,8 @@ def add_pattern(request):
                 pattern.save()
             else:
                 print form.errors
-            #Fix Return. We want to return pattern
-            return index_popular(request)
+
+            return redirect('pattern', pattern.user, pattern.slug)
         return render(request, 'yarntail/add_pattern.html', {'pattern_form': form})
     else:
         return redirect(index_popular(request))

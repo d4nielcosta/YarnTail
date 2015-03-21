@@ -2,8 +2,8 @@ from django.conf.urls import patterns, url
 from yarntail import views
 
 urlpatterns = patterns('',
-                       url(r'^$', views.index_popular, name='index_popular'),
-                       url(r'^index/$', views.index_popular, name='index_popular'),
+                       url(r'^$', views.index_popular, name='index'),
+                       url(r'^index/$', views.index_popular, name='index'),
                        url(r'^index/latest/$', views.index_latest, name='index_latest'),
                        url(r'^index/popular/$', views.index_popular, name='index_popular'),
                        url(r'^index/all/$', views.index_all, name='index_all'),
