@@ -192,7 +192,6 @@ def upload_instructions(request):
     return render(request, 'yarntail/upload_instructions.html')
 
 
-
 def search(request):
 
     qs = User.objects.all()
