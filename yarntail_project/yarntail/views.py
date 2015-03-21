@@ -172,10 +172,10 @@ def search(request):
 
     for pattern in patterns:
 
-        response[pattern.title] = {pattern.slug : pattern.user.user_profile.slug}
+        #response[pattern.title] = {pattern.slug : pattern.user.user_profile.slug}
+        response[pattern.slug] = pattern.user.user_profile.slug
 
-
-    return JsonResponse(response)
+    return JsonResponse(response, safe=False)
 
 
 def search_results(request, query=None):

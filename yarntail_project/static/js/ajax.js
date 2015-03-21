@@ -21,7 +21,7 @@ $(function () {
 });
 
 function searchSuccess(data, textStatus, jqXHR) {
-    $('#results').html(data);
+   $('#results').html(data);//need to ask how to get a signle item out of this dict********
 }
 
 

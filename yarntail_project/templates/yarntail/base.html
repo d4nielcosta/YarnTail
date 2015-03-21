@@ -48,21 +48,18 @@
         <!--Search bar area begin----------------------->
 
 
+
+
+
         <!--will likely need to pass this in through a view somehow...-->
         {% csrf_token %}
 
         <input type="text" id="search" name="search">
         <button type="submit" id="search-button" class="btn btn-default" formaction="/yarntail/search_results.html">Submit</button>
 
-        <!--will likely need to go in a "search_results.html"-->
+
 
         <ul id="results"></ul>
-
-        {% if patterns.count > 0 %}{% for pattern in patterns %}
-            <li>{{ pattern.object.title }}</li>
-        {% endfor %} {% else %}
-            None to show!
-        {% endif %}
 
 
 
