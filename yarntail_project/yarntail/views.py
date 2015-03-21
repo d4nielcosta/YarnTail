@@ -201,4 +201,3 @@ def search(request):
         return
 
     return render(request, 'yarntail/search.html', qs)
-

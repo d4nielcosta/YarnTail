@@ -1,79 +1,46 @@
-from datetime import datetime
-from pytz import UTC
-
-
-__author__ = 'joshuamarsh'
 import os
-
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'yarntail_project.settings')
 
 import django
-
 django.setup()
 
-from yarntail.models import Comment, Pattern, Profile, User
+from yarntail.models import *
 
-def add_comment(profile, pattern, date, comment):
-    com = Comment.objects.get_or_create(profile=profile, pattern=pattern, creation_date=date, comment_string=comment)[0]
-    return com
-
-def add_pattern(name, user, pattern, descr, date, comment, likes, views, favs, diff):
-    pat = Pattern.objects.get_or_create(name=name, user=user,pattern_string=pattern, description=descr, creation_date=date,
-                                      comment=comment, likes=likes, views=views, favorites=favs, difficulty=diff)
-    return pat
-
-def add_profile(user, com, pat, descr, likes, liked_p, liked_u, fav, fav_p, fav_u, views, date, num_p, dob):
-    pro = Profile.objects.get_or_create(user=user, comment=com, pattern=pat, description=descr, likes=likes,
-                                        liked_pattern=liked_p, liked_user=liked_u, favorites=fav,
-                                        favorited_pattern=fav_p, favorited_user=fav_u, views=views,
-                                        registration_date=date, number_of_patterns=num_p, date_of_birth=dob)
-    return pro
-
-def add_user(username, password, email):
-    # may have issue assigning password
-    use = User.objects.get_or_create(username=username, password=password, email=email)
-    return use
 
 def populate():
 
-    gertrude = add_user('gertrude', 'password', "yarntailtest@yahoo.com")
+    add_admin()
 
-    gertrudes_comment = add_comment(profile=None,
-                                    pattern=None,
-                                    date=datetime(12, 1, 23, 1, 59, 0, tzinfo=UTC),
-                                    comment="This is a test comment for gertrude")
+    add_user(username='test', password='test', email='test@mailinator.com', first_name='Test', last_name='User', dob='1995-01-01')
 
-    gertrudes_pattern = add_pattern(name="gloves",
-                                   user=User.objects.get(username='gertrude'),
-                                   pattern="sspss",
-                                   descr="This is the description for a pair of gloves.",
-                                   date=datetime(11, 2, 22, 2, 58, 1, tzinfo=UTC),
-                                   comment=gertrudes_comment,
-                                   likes=5,
-                                   views=6,
-                                   favs=7,
-                                   diff='M')
+    add_user(username='user1', password='password', email='awesome@captains_of_the_world.com', first_name='Captain', last_name='Awesome', dob='1990-12-12')
 
-    gertrudes_comment.pattern = Pattern.objects.get(name='gloves')
+    add_pattern(title='Fingerless Gloves', description='Classy fingerless gloves. Perfect for a smartphone user', user='user1')
 
-    gertrudes_profile = add_profile(user=User.objects.get(username='gertrude'),
-                                    com=gertrudes_comment,##
-                                    pat=Pattern.objects.get(name='gloves'),
-                                    descr="This is Gertrudes profile description",
-                                    likes=3,
-                                    liked_p=None,
-                                    liked_u=None,
-                                    fav=4,
-                                    fav_p=None,
-                                    fav_u=None,
-                                    views=5,
-                                    date=datetime(10, 3, 21, 3, 57, 2, tzinfo=UTC),
-                                    num_p=1,
-                                    dob=datetime(9, 4, 20, 4, 56, 3, tzinfo=UTC))
-    gertrudes_comment.profile = Profile.objects.get(user=User.objects.get(username='gertrude'))
+    add_comment(user='user1', pattern_slug='fingerless-gloves', comment='Tried this pattern and I loved it. I highly recommend it')
 
+def add_user(username, password, first_name, last_name, email, dob):
+    user = User.objects.create_user(username, email, password)
+    user.save()
 
+    prof = UserProfile.objects.get_or_create(user=user, first_name=first_name, last_name=last_name, date_of_birth=dob)
+    return prof
 
+def add_admin():
+    user = User.objects.create_user('admin', '2087521d@student.gla.ac.uk', 'password')
+    user.is_staff = True
+    user.is_superuser = True
+    user.save()
+
+def add_pattern(title, description, user):
+    pattern = Pattern.objects.create(title=title, description=description, user=User.objects.get(username=user))
+    return pattern
+
+def add_comment(user, pattern_slug, comment):
+    comment = Comment.objects.create(user=User.objects.get(username=user), pattern=Pattern.objects.get(slug=pattern_slug), comment_string=comment)
+    return comment
+
+# Start execution here!
 if __name__ == '__main__':
-    print "Starting yarntail population script..."
+    print "Starting YarnTail population script..."
     populate()
