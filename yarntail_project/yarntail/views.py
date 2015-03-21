@@ -1,5 +1,7 @@
+import json
 import user
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 from django.forms import model_to_dict
 from django.shortcuts import render, redirect, render_to_response
 from django.http import JsonResponse
@@ -167,16 +169,23 @@ def search(request):
     else:
         search_text = ''
 
-    patterns = Pattern.objects.filter(title__contains=search_text)
-    response = {}
+    patterns = get_patterns(max_results = 10, starts_with=search_text)
+    pattern_titles = []
+    for pat in patterns:
+        pattern_titles = pat.title
 
-    for pattern in patterns:
+    return HttpResponse(pattern_titles, content_type="application/json")
+    #return JsonResponse(json.dumps(pattern_titles), safe=False)
 
-        #response[pattern.title] = {pattern.slug : pattern.user.user_profile.slug}
-        response[pattern.slug] = pattern.user.user_profile.slug
 
-    return JsonResponse(response, safe=False)
-
+def get_patterns(max_results=0, starts_with=''):
+    pattern_list = []
+    if starts_with:
+        pattern_list = Pattern.objects.filter(title__startswith=starts_with)
+    if max_results > 0:
+        if len(pattern_list) > max_results:
+            pattern_list = pattern_list[:max_results]
+    return pattern_list
 
 def search_results(request, query=None):
     context_dict = {}
