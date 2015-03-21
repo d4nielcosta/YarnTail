@@ -138,10 +138,10 @@
 					<div class="col-md-6">
 						<h3>Copy and Paste</h3>
 						<div class="well well-lg"><i>
-						You can click and drag to select several stitches at once. Click <b>Copy</b> to copy the selected stitches. Click <b>Paste</b> to paste the copied stitches to the selected stitches.
+						You can click several stitches to select them at once. Click <b>Copy</b> to copy the selected stitches. Click <b>Paste</b> to paste the copied stitches to the selected area.
 						</i></div>
-						<div class="row">
-						 <button type="button" class="btn btn-primary btn-lg btn-block" onclick="select_or_change()" id="">Copy</button>
+						 <button type="button" class="btn btn-primary btn-lg btn-block" onclick="select_or_change()" id="copymode" disabled>Copy Mode</button></br>
+						 <div class="row">
 						    <div class="col-md-6">
 							    <button type="button" class="btn btn-primary btn-lg btn-block" disabled>Copy</button>
 							</div>
@@ -191,17 +191,6 @@
 					document.getElementById("grid").innerHTML = text;
 				}
 				
-//				function img_create(id) {
-//					var img= IEWIN? new Image() : document.createElement('img');
-//					img.id = id;
-//					img.src= "/static/images/knit.png";
-//					img.ondrop = "change_stitch('"+id+"')"
-//					img.ondragover = "allowDrop(event)"
-//					img.style = "background-color:"
-//					img.height = "24"
-//					img.width = "24"
-//					return img;
-//				}
 				
 				function change_stitch(imageID) {
 					var image = document.getElementById(imageID);
@@ -329,6 +318,11 @@
 					ev.target.setAttribute("style", ('background-color:'+data+';'));
 				}
 				
+				function list_to_string(list){
+				    var string = json.loads(list);
+					return string;
+				}
+				
 				function pattern_details(){
 				    var pattern = {};
 					pattern["title"] = document.getElementById("title").innerHTML;
@@ -341,7 +335,7 @@
 					    difficulty = "Medium";
 					}
 					pattern["difficulty"] = difficulty;
-					pattern["design"] = compile_pattern();
+					pattern["design"] = list_to_string(compile_pattern());
 					return pattern;
 					
 				}
