@@ -12,7 +12,7 @@ class MyRegistrationView(RegistrationView):
         return '/yarntail/add_profile/'
 
 urlpatterns = patterns('',
-                       url(r'^$', views.index, name='index'),
+                       url(r'^$', views.index_popular, name='index_popular'),
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^yarntail/', include('yarntail.urls')),
                        url(r'^accounts/register/$', MyRegistrationView.as_view(), name='registration_register'),
