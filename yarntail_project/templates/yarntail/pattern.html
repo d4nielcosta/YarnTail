@@ -1,14 +1,55 @@
 {% extends 'yarntail/base.html' %}
 
 {% block body_block %}
+
+
 <div class="page-header">
     <h1>{{pattern.title}}</h1>
 
-user and pattern have been passed in as 'user' and 'pattern'
+    user and pattern have been passed in as 'user' and 'pattern'
 
-views = {{ views }}
+    views = {{ views }}
+
+    likes = {{ pattern.likes }}
 
 </div>
 
+<div>
+
+    <form id="comment_form" method="post" action=".">
+
+        {% csrf_token %}
+
+        <div class="col-lg-6">
+            <div class="input-group">
+                <input class="form-control" id="id_comment" maxlength="20000" name="comment_string" type="text"
+                       placeholder="Enter comment"/>
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="submit" name="submit"> Share </button>
+          <br/>
+      </span>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+<br/><br/><h2>Comments</h2>
+
+<div>
+    <ul>
+        {% for comments in comment %}
+        <p>
+            <strong>{{ comments.comment_string }}</strong><br/>
+            <i>@{{ comments.user }} on {{ comments.creation_date }}</i>
+
+        <p/>
+
+        {% endfor %}
+
+    </ul>
+</div>
 
 {% endblock %}
+

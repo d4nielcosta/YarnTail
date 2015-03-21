@@ -22,3 +22,8 @@ class PatternForm(forms.ModelForm):
     class Meta:
         model = Pattern
         fields = ('title', 'description', 'slug')
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('comment_string',)

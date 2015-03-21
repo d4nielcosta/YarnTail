@@ -1,29 +1,417 @@
 {% extends "yarntail/base.html" %}
 
+{% load staticfiles %}
 
 {% block body_block %}
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <style>
+        td {
+            padding: 0px;
+            border: 1px solid #d3d3d3;
+            min-width: 24px;
+            max-width: 24px;
+            width: 24px;
+            height: 24px;
+            text-align: center;
+            white-space: nowrap;
+			border-collapse: collapse;
+        }
+		
+		tr {
+		    border: 1px solid #d3d3d3;
+			border-collapse: collapse;
+		}
+		
+		.flexy {
+            display: block;
+            height:528px;
+	        width:528px;
+            overflow: auto;
+			border-collapse: collapse;
+            table-layout:fixed;
+		}
+		.nopadding {
+            padding: 0px;
+            margin: 0px;
+        }
+		
+		.selected{
+		    border: 2px solid #C91111;
+		}
+		
+		.notselected{
+		    border: 1px solid #d3d3d3;
+		}
+		
+        </style>
+	</head>
 
-    <form id="pattern_form" method="post" action="{% url 'add_pattern' %}" enctype="multipart/form-data">
 
-        {% csrf_token %}
+<body onload="adjust_axis()">
 
-        <div class="form-group" >
-            <p class="required"> <label for="id_title"> Title </label>
-                <input class="form-control"  id="id_title" maxlength="30" name="title" type="text"  placeholder="Enter title"/></p>
+<div role="tabpanel">
+
+    <!-- NAV TABS -->
+    <ul class="nav nav-tabs nav-justified" role="tablist">
+        <li role="presentation" class="active"><a href="#graphical_input" aria-controls="graphical_input" role="tab" data-toggle="tab">Graphical Input</a></li>
+        <li role="presentation"><a href="#text_input" aria-controls="text_input" role="tab" data-toggle="tab" onclick="print_list(compile_pattern())">Text Input</a></li>
+        <li role="presentation"><a href="#save_and_submit" aria-controls="save_and_submit" role="tab" data-toggle="tab">Save and Submit</a></li>
+    </ul>
+
+<!-- TAB CONTENT -->
+<div class="tab-content">
+    <!-- GRAPIHCAL INPUT TAB -->
+    <div role="tabpanel" class="tab-pane active" id="graphical_input" style="nopadding">
+		<div class="row">
+			<div class="col-md-6 nopadding">		
+			    <h3>Select a size for your canvas</h3>
+				<div class="row">
+					<form name="sizeInput">
+						<div class="col-md-6">
+						    <h4>X-axis size:</h4>
+							<input type="number" class="form-control"  value="20" id="xInput">
+						</div>
+						<div class="col-md-6">
+						    <h4>Y-axis size:</h4>
+							<input type="number" class="form-control"  value="20" id="yInput">
+							<div class="row">
+					</br>		
+					<div class="col-md-6">
+					</div>
+					<div class="col-md-6" >
+					<button type="button" class="btn btn-primary btn-lg btn-block" onclick="adjust_axis()">Adjust Axis</button>
+					</div>
+				</div>
+						</div>
+					</form>
+				
+						
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<h3>Legend</h3>
+						<div class="well well-lg">
+						    <img id="knit_legend" src="/static/images/knit_legend.png">
+							<label for="knit_legend">Knit Stitch</label><br>
+							<img id="purl_legend" src="/static/images/purl.png">
+							<label for="purl_legend">Purl Stitch</label><br>
+							<img id="drop_legend" src="/static/images/drop.png">
+							<label for="drop_legend">Drop Stitch</label><br>
+						</div>
+						<h3>Drag a colour onto a stitch to colour it</h3>
+						<table>
+						    <tr>
+							    <td id="#FFFFFF" bgcolor="FFFFFF" draggable="true" ondragstart="drag(event)"></td>
+								<td id="#000000" bgcolor="000000" draggable="true" ondragstart="drag(event)"></td>
+								<td id="#C91111" bgcolor="C91111" draggable="true" ondragstart="drag(event)"></td>
+								<td id="#D84E09" bgcolor="D84E09" draggable="true" ondragstart="drag(event)"></td>
+								<td id="#FF8000" bgcolor="FF8000" draggable="true" ondragstart="drag(event)"></td>
+								<td id="#F6EB20" bgcolor="F6EB20" draggable="true" ondragstart="drag(event)"></td>
+								<td id="#51C201" bgcolor="51C201" draggable="true" ondragstart="drag(event)"></td>
+								<td id="#1C8E0D" bgcolor="1C8E0D" draggable="true" ondragstart="drag(event)"></td>
+							</tr>
+							<tr>
+								<td id="#09C5F4" bgcolor="09C5F4" draggable="true" ondragstart="drag(event)"></td>
+								<td id="#2862B9" bgcolor="2862B9" draggable="true" ondragstart="drag(event)"></td>
+								<td id="#7E44BC" bgcolor="7E44BC" draggable="true" ondragstart="drag(event)"></td>
+								<td id="#943F07" bgcolor="943F07" draggable="true" ondragstart="drag(event)"></td>
+								<td id="#5BD2C0" bgcolor="5BD2C0" draggable="true" ondragstart="drag(event)"></td>
+								<td id="#F6E120" bgcolor="F6E120" draggable="true" ondragstart="drag(event)"></td>
+								<td id="#808080" bgcolor="808080" draggable="true" ondragstart="drag(event)"></td>
+								<td id="#7E9156" bgcolor="7E9156" draggable="true" ondragstart="drag(event)"></td>
+						    </tr>
+							<tr>
+								<td id="#83AFDB" bgcolor="83AFDB" draggable="true" ondragstart="drag(event)"></td>
+								<td id="#F863CB" bgcolor="F863CB" draggable="true" ondragstart="drag(event)"></td>
+								<td id="#B44848" bgcolor="B44848" draggable="true" ondragstart="drag(event)"></td>
+								<td id="#F5D4B4" bgcolor="F5D4B4" draggable="true" ondragstart="drag(event)"></td>
+								<td id="#FCA8CC" bgcolor="FCA8CC" draggable="true" ondragstart="drag(event)"></td>
+								<td id="#CC8454" bgcolor="CC8454" draggable="true" ondragstart="drag(event)"></td>
+								<td id="#BF6A1F" bgcolor="BF6A1F" draggable="true" ondragstart="drag(event)"></td>
+								<td id="#FD9800" bgcolor="FD9800" draggable="true" ondragstart="drag(event)"></td>
+						    </tr>
+						</table>
+					</div>
+					<div class="col-md-6">
+						<h3>Copy and Paste</h3>
+						<div class="well well-lg"><i>
+						You can click several stitches to select them at once. Click <b>Copy</b> to copy the selected stitches. Click <b>Paste</b> to paste the copied stitches to the selected area.
+						</i></div>
+						 <button type="button" class="btn btn-primary btn-lg btn-block" onclick="select_or_change()" id="copymode" disabled>Copy Mode</button></br>
+						 <div class="row">
+						    <div class="col-md-6">
+							    <button type="button" class="btn btn-primary btn-lg btn-block" disabled>Copy</button>
+							</div>
+							<div class="col-md-6">
+							    <button type="button" class="btn btn-primary btn-lg btn-block" disabled>Paste</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<!-- GRID -->
+			<div class="col-md-6">
+			    <h3>Click a stitch on the grid to change the stitch</h3>
+				<table id="grid" class="flexy">
+				
+				</table>
+				<script>
+				
+				$(function() {
+					$( "#grid" ).selectable();
+				});
+  
+				function adjust_axis(){
+				    var xlen = document.getElementById("xInput").value;
+				    var ylen = document.getElementById("yInput").value;
+					var x;
+					var y;
+					var text = '';
+					for (y = 0; y <= ylen; y++) {
+						if (y<1){
+							text += '<td ></td>';
+							for (x = 1; x <= xlen; x++) {
+								text += '<td><b>' + x + '</b></td>';
+								}
+						}else{
+							text += '<tr><td><b>' + y + '</b></td>';
+							for (x = 1; x <= xlen; x++) {
+							    var imageID = x + " " + y;
+								text += '<td><img class="notselected" id="'+imageID+'" src="/static/images/knit.png" ondrop="drop(event)" style="background-color:#FFFFFF" ondragover="allowDrop(event)" onclick="change_stitch';
+								text += "('"+imageID+"')" + '" alt="stitch" height="24" width="24"></td>';
+								}
+							text += '</tr>';
+							}
+					}
+					document.getElementById("grid").innerHTML = "";
+					document.getElementById("grid").innerHTML = text;
+				}
+				
+				
+				function change_stitch(imageID) {
+					var image = document.getElementById(imageID);
+					if (image.src.match("knit")) {
+					    if (image.getAttribute("style") == "background-color:#000000;"){
+						    image.src = "/static/images/purl_white.png";
+						}else{
+						    image.src = "/static/images/purl.png";
+						}
+					} else if (image.src.match("purl")){
+					    if (image.getAttribute("style") == "background-color:#000000;"){
+						    image.src = "/static/images/drop_white.png";
+						}else{
+						    image.src = "/static/images/drop.png";
+						}
+					} else {
+					    image.src = "/static/images/knit.png";
+					}
+					
+				}
+				
+				function compile_pattern(){
+				    var xsize = document.getElementById("xInput").value;
+				    var ysize = document.getElementById("yInput").value;
+					
+					var final_list = [];
+					for (var y = 1; y <= ysize; y++) {
+					    var list = [];
+					    for (var x = 1; x <= xsize; x++) {
+							var imageID = x +" "+ y;
+							var stitch_image = document.getElementById(imageID).getAttribute("src");
+							var stitch = "knit";
+							var colour = document.getElementById(imageID).getAttribute("style");
+							colour = colour.slice(17, 24);
+							switch(stitch_image){
+								case "/static/images/drop.png":
+									stitch = "drop";
+									break;
+								case "/static/images/drop_white.png":
+									stitch = "drop";
+									break;
+								case "/static/images/purl.png":
+									stitch = "purl";
+									break;
+								case "/static/images/purl_white.png":
+									stitch = "purl";
+									break;
+							}
+							var pair = [];
+							pair.push(stitch);
+							pair.push(colour);
+							list.push(pair);
+							}
+						final_list.push(list);
+					    }
+					console.log(final_list);
+					return final_list;
+				}
+				
+				function print_list(list){
+					var xsize = document.getElementById("xInput").value;
+				    var ysize = document.getElementById("yInput").value;
+					var text = "[";
+					for (var y = 0; y < ysize; y++){
+					    var row = list[y];
+						text += "[";
+						for (var x = 0; x < xsize; x++){
+						    var pair = row[x];
+							text += "[" + pair +"]";
+						}
+						text += "], ";
+					}
+					text += "]";
+				}
+				
+				
+				function select(id){
+				    if(document.getElementById(id).class == "selected"){
+					    document.getElementById(id).setAttribute("class", "notselected");
+					}
+					else{
+					    document.getElementById(id).setAttribute("class", "selected");				
+					}
+				}
+				
+				function select_or_change(){
+				    if(document.getElementById("copymode").checked){
+					    change_to_select();
+					}
+					else{
+					    change_to_switch();
+					}
+				}
+				
+				function change_to_select(){
+				    for( var y = 1; y <= document.getElementById("yInput").value; y++){
+					    for( var x = 1; x <= document.getElementById("xInput").value; x++){
+						    id = x+' '+y;
+						    document.getElementById(id).setAttribute("onclick", "select('"+id+"')");
+						}
+                    }					
+				}
+				
+				function change_to_switch(){
+				    for( var y = 1; y <= document.getElementById("yInput").value; y++){
+					    for( var x = 1; x <= document.getElementById("xInput").value; x++){
+						    id = x+' '+y;
+						    document.getElementById(id).setAttribute("onclick", "change_stitch('"+id+"')");
+						}
+                    }					
+				}
+				
+				
+				function allowDrop(ev) {
+					ev.preventDefault();
+				}
+
+				function drag(ev) {
+					ev.dataTransfer.setData("text", ev.target.id);
+				}
+
+				function drop(ev) {
+					ev.preventDefault();
+					var data = ev.dataTransfer.getData("text");
+					ev.target.setAttribute("style", ('background-color:'+data+';'));
+				}
+				
+				function list_to_string(list){
+				    var string = json.loads(list);
+					return string;
+				}
+				
+				function pattern_details(){
+				    var pattern = {};
+					pattern["title"] = document.getElementById("title").innerHTML;
+					pattern["description"] = document.getElementById("description").innerHTML;
+					var difficulty = "Easy";
+					if (document.getElementById("radiohard").checked){
+					    difficulty = "Hard";
+					}
+					if (document.getElementById("radiomedium").checked){
+					    difficulty = "Medium";
+					}
+					pattern["difficulty"] = difficulty;
+					pattern["design"] = list_to_string(compile_pattern());
+					return pattern;
+					
+				}
+				</script>
+			</div>
+		</div>
+	</div>
+	
+	<!-- TEXT INPUT TAB -->
+	<div role="tabpanel" class="tab-pane" id="text_input" >
+	    <div class="row">
+		    <div class="col-md-6">
+			    <h3>Instructions for Inputting Text</h3>
+				<div class="well well-lg" id="instr">...</div>
+				<h3>Example Pattern</h3>
+				<div class="well well-lg">...</div>
+		    </div>
+			<div class="col-md-6">
+			    <h3>Insert Pattern Text</h3>
+			    <textarea id="text_input" class="form-control" rows="20" placeholder="Enter pattern text here..."></textarea>
+		    </div>
         </div>
-        <div class="form-group" >
-            <p class="required"> <label for="id_description"> Description </label>
-                <input class="form-control"  id="id_description" maxlength="3000" name="description" type="text"  placeholder="Enter description"/></p>
+	</div>
+
+	<!-- SAVE AND SUBMIT TAB -->
+	<div role="tabpanel" class="tab-pane" id="save_and_submit">
+        <div class="row">
+		    <div class="col-md-6">
+			    <form>
+                    <div class="form-group">
+                        <label for="name"><h3>Give your design a name:</h3></label>
+                        <input class="form-control" id="title" placeholder="Enter name...">
+                    </div>
+					<h3>Select a difficulty for your design:</h3>
+					<div class="radio">
+                        <input type="radio" name="optionsRadios" id="radiohard" value="option1">
+						<label for="radiohard">Hard</label>
+                    </div>
+                    <div class="radio">
+                        <input type="radio" name="optionsRadios" id="radiomedium" value="option2" 
+						<label for="radiomedium">Medium</label>
+                    </div>
+                    <div class="radio">
+                        <input type="radio" name="optionsRadios" id="radioeasy" value="option3" checked>
+						<label for="radioeasy">Easy</label>
+                    </div>
+				
+				</form>
+		    </div>
+			<div class="col-md-6">
+			    <form>
+				    <div class="form-group">
+                        <label for="description"><h3>Write a short description about your design:</h3></label>
+                        <textarea rows="10" class="form-control" id="description" placeholder="Enter description..."></textarea>
+                    </div>
+				</form>
+				<div class="col-md-6">
+				</div>
+				<div class="col-md-6">
+				    <button id="submit" type="button" class="btn btn-primary btn-lg btn-block" >Submit</button>
+				</div>
+		    </div>
         </div>
+    </div>
+
+</div>
+</div>
 
 
-        <button type="submit" class="btn btn-default">Submit</button>
-    </form>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+</body>
 
 
 {% endblock %}
 
-<!--
-Initial Form: Useful to test pattern input
-{% csrf_token %}
-{{ pattern_form.as_p }}-->
