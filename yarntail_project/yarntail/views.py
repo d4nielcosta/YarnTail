@@ -20,16 +20,29 @@ from models import *
 """
 
 
-def index(request):
+def index_popular(request):
+    context_dict = {}
+
+    popular_patterns = Pattern.objects.filter().order_by('-views')[:20]
+    context_dict['popular_patterns'] = popular_patterns
+
+    return render(request, 'yarntail/index_popular.html', context_dict)
+
+def index_latest(request):
     context_dict = {}
 
     latest_patterns = Pattern.objects.filter().order_by('-creation_date')[:20]
     context_dict['latest_patterns'] = latest_patterns
 
-    popular_patterns = Pattern.objects.filter().order_by('-views')[:20]
-    context_dict['popular_patterns'] = popular_patterns
+    return render(request, 'yarntail/index_latest.html', context_dict)
 
-    return render(request, 'yarntail/index.html', context_dict)
+def index_all(request):
+    context_dict = {}
+
+    all_patterns = Pattern.objects.filter().order_by('-creation_date')
+    context_dict['patterns_all'] = all_patterns
+
+    return render(request, 'yarntail/index_all.html', context_dict)
 
 
 def about(request):
@@ -74,13 +87,13 @@ def register_profile(request):
                 profile.save()
         else:
             print form.errors
-        return index(request)
+        return render(request, 'registration/registration_complete.html')
     else:
         form = UserProfileForm(request.GET)
 
     return render(request, 'yarntail/profile_registration.html', {'profile_form': form})
 
-
+@login_required
 def edit_profile(request):
     if request.method == "POST":
 
@@ -105,7 +118,7 @@ def edit_profile(request):
         else:
             print profileForm.errors
 
-        return index(request)
+        return redirect('profile', profile.user)
     else:
         profileForm = UserProfileForm(request.GET)
 
@@ -129,6 +142,7 @@ def pattern(request, username_slug, pattern_slug):
     context_dict['user'] = user
     context_dict['pattern'] = pattern
     context_dict['views'] = pattern.views
+
     context_dict['comment'] = comment
     return render(request, 'yarntail/pattern.html', context_dict)
 
@@ -154,12 +168,13 @@ def comment(request, username_slug, pattern_slug):
             else:
                 print form.errors
 
-            return index(request)
+            return redirect('profile', profile.user)
         return render(request, 'yarntail/comment.html', {'comment_form': form})
     else:
         return redirect(pattern(request, username_slug, pattern_slug))
 
 
+@login_required
 def add_pattern(request):
     if request.user.is_authenticated():
         form = PatternForm(request.GET)
@@ -171,11 +186,11 @@ def add_pattern(request):
                 pattern.save()
             else:
                 print form.errors
-            #Fix Return. We want to return pattern
-            return index(request)
+
+            return redirect('pattern', pattern.user, pattern.slug)
         return render(request, 'yarntail/add_pattern.html', {'pattern_form': form})
     else:
-        return redirect(index(request))
+        return redirect(index_popular(request))
 
 
 def pattern_instructions(request):

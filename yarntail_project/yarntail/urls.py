@@ -2,8 +2,11 @@ from django.conf.urls import patterns, url
 from yarntail import views
 
 urlpatterns = patterns('',
-                       url(r'^$', views.index, name='index'),
-                       url(r'^index/$', views.index, name='index'),
+                       url(r'^$', views.index_popular, name='index'),
+                       url(r'^index/$', views.index_popular, name='index'),
+                       url(r'^index/latest/$', views.index_latest, name='index_latest'),
+                       url(r'^index/popular/$', views.index_popular, name='index_popular'),
+                       url(r'^index/all/$', views.index_all, name='index_all'),
 
                        url(r'^about_us/$', views.about, name='about'),
                        url(r'^search/(?P<query_slug>[\w\-]+)/$', views.search, name='search'),
