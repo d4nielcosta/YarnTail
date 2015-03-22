@@ -50,37 +50,6 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
 
-                <li>
-                    <!--Search bar area begin----------------------->
-
-
-                    <!--will likely need to pass this in through a view somehow...-->
-                    {% csrf_token %}
-
-                    <div class="navbar-brand" id="search-group">
-                        <!-- /.col-lg-6 -->
-                        <div class="col-lg-6">
-                            <div class="input-group">
-                                <input type="text" id="search" name="search" class="form-control"
-                                       placeholder="Search for..."
-                                       autocomplete="off" ">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" id="search-button" type="submit"
-                                formaction="/yarntail/search_results.html">
-                            Go!
-                        </button>
-                    </span>
-                            </div>
-                            <!-- /input-group -->
-                        </div>
-                        <!-- /.col-lg-6 -->
-                    </div>
-                    <!-- /.row -->
-
-
-                    <!--Search bar area end-------------------------->
-                </li>
-
 
                 {% if user.is_authenticated %}
                     <li><a id="blackBack" href="{% url 'add_pattern' %}">New Pattern</a></li>
@@ -92,6 +61,35 @@
                     <li><a id="blackBack" href="{% url 'registration_register' %}">Sign Up</a></li>
                 {% endif %}
             </ul>
+
+            <!--Search bar area begin----------------------->
+
+
+                    <!--will likely need to pass this in through a view somehow...-->
+                    {% csrf_token %}
+
+                    <!--<div class="navbar-brand" id="search-group">-->
+                        <!-- /.col-lg-6 -->
+                        <div class="col-sm-3 col-md-3 pull-center">
+                            <div class="input-group">
+                                <input type="text" id="search" name="search" class="form-control"
+                                       placeholder="Search for..."
+                                       autocomplete="off" style="margin-top: 7px;">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" id="search-button" type="submit"
+                                formaction="/yarntail/search_results.html" style="margin-top: 7px;">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                    </span>
+                            <!--</div>-->
+                            <!-- /input-group -->
+                        </div>
+                        <!-- /.col-lg-6 -->
+                    </div>
+                    <!-- /.row -->
+
+
+                    <!--Search bar area end-------------------------->
         </div>
     </div>
 </div>
