@@ -140,7 +140,6 @@ def pattern(request, username_slug, pattern_slug):
     pattern = Pattern.objects.get(user=user, slug=pattern_slug)
     comment = Comment.objects.filter(pattern=pattern).order_by('-creation_date')
 
-    print "got to increment statement"
     pattern.views += 1
     pattern.save()
 

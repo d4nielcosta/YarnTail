@@ -68,3 +68,4 @@ def add_comment(user, pattern_slug, comment):
 if __name__ == '__main__':
     print "Starting YarnTail population script..."
     populate()
+    print "Population script executed successfully"

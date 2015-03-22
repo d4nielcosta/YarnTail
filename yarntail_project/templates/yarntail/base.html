@@ -62,14 +62,11 @@
                 {% endif %}
             </ul>
 
-            <!--Search bar area begin----------------------->
-
-
-                    <!--will likely need to pass this in through a view somehow...-->
+            <!--Search-->
                     {% csrf_token %}
 
-                    <!--<div class="navbar-brand" id="search-group">-->
-                        <!-- /.col-lg-6 -->
+
+
                         <div class="col-sm-3 col-md-3 pull-center">
                             <div class="input-group">
                                 <input type="text" id="search" name="search" class="form-control"
@@ -81,15 +78,13 @@
                             <i class="glyphicon glyphicon-search"></i>
                         </button>
                     </span>
-                            <!--</div>-->
-                            <!-- /input-group -->
+
+
                         </div>
-                        <!-- /.col-lg-6 -->
+
                     </div>
-                    <!-- /.row -->
 
-
-                    <!--Search bar area end-------------------------->
+            <!---------------------------->
         </div>
     </div>
 </div>
