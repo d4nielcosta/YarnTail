@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 import datetime
 
 class UserProfileTestCase(TestCase):
+    # Creates a user and UserProfile object and tests the required fields exist correctly.
 
     def setUp(self):
         user = User.objects.create_user("Hulk", "gammaradiationisfun@greenman.com", "password")
@@ -31,6 +32,7 @@ class UserProfileTestCase(TestCase):
         self.assertEqual(str(hulk_dob), str(datetime.date(1962, 5, 1)))
 
 class PatternTestCase(TestCase):
+    # Creates a user and UserProfile and associates a pattern with the profile, tests pattern attributes.
 
     def setUp(self):
         user = User.objects.create_user("Hulk", "gammaradiationisfun@greenman.com", "password")
@@ -71,6 +73,8 @@ class PatternTestCase(TestCase):
                                            "rage monster. HULK SMASH!")
 
 class CommentTestCase(TestCase):
+    # Creates two users, two UserProfiles, a pattern associated with one profile and a comment by one user about
+    # the pattern. Tests that the comment attributes are correct.
 
     def setUp(self):
         user1 = User.objects.create_user("Hulk", "gammaradiationisfun@greenman.com", "password")
