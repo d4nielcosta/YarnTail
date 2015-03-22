@@ -1,0 +1,12 @@
+How to test YarnTail
+
+coverage run manage.py test yarntail
+
+coverage report
+
+
+
+
+
+To be able to use these commands you will need to install coverage.py by running:
+pip install coverage
