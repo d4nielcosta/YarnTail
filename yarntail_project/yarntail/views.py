@@ -204,7 +204,7 @@ def search(request):
     for pat in patterns:
         pattern_titles += pat.title
     print pattern_titles
-    return HttpResponse(pattern_titles)
+    return HttpResponse(patterns)
 
 
 def get_patterns(max_results=0, contains=''):

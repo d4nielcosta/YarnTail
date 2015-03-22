@@ -46,40 +46,41 @@
 
         </div>
 
-        <!--Search bar area begin----------------------->
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+
+                <li>
+                    <!--Search bar area begin----------------------->
 
 
-        <!--will likely need to pass this in through a view somehow...-->
-        {% csrf_token %}
+                    <!--will likely need to pass this in through a view somehow...-->
+                    {% csrf_token %}
 
-        <div class="row">
-            <!-- /.col-lg-6 -->
-            <div class="col-lg-6">
-                <div class="input-group">
-                    <input type="text" id="search" name="search" class="form-control" placeholder="Search for..."
-                           autocomplete="off">
+                    <div class="navbar-brand" id="search-group">
+                        <!-- /.col-lg-6 -->
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <input type="text" id="search" name="search" class="form-control"
+                                       placeholder="Search for..."
+                                       autocomplete="off" ">
                     <span class="input-group-btn">
                         <button class="btn btn-default" id="search-button" type="submit"
                                 formaction="/yarntail/search_results.html">
                             Go!
                         </button>
                     </span>
-                </div>
-                <!-- /input-group -->
-            </div>
-            <!-- /.col-lg-6 -->
-        </div>
-        <!-- /.row -->
+                            </div>
+                            <!-- /input-group -->
+                        </div>
+                        <!-- /.col-lg-6 -->
+                    </div>
+                    <!-- /.row -->
 
 
-        <ul id="results"></ul>
+                    <!--Search bar area end-------------------------->
+                </li>
 
-
-        <!--Search bar area end-------------------------->
-
-
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
 
                 {% if user.is_authenticated %}
                     <li><a id="blackBack" href="{% url 'add_pattern' %}">New Pattern</a></li>

@@ -44,3 +44,8 @@ h1 {
     font-family: "verdana";
     font-size: 30px;
     }
+
+.input-group{
+
+    width: 400px;
+}
