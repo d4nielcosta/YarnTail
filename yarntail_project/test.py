@@ -1,7 +1,6 @@
 from django.test import TestCase
 from yarntail.models import UserProfile, Pattern, Comment
 from django.contrib.auth.models import User
-from django.db import models
 import datetime
 
 class UserProfileTestCase(TestCase):
@@ -36,7 +35,7 @@ class PatternTestCase(TestCase):
     def setUp(self):
         user = User.objects.create_user("Hulk", "gammaradiationisfun@greenman.com", "password")
         UserProfile.objects.create(user=user, first_name="Bruce", last_name="Banner", date_of_birth=datetime.date(1962, 5, 1))
-        Pattern.objects.create(title="Incredible Shorts", user=user, difficulty="Easy",
+        Pattern.objects.create(title="Incredible Shorts", user=user, difficulty="Easy", likes=5, views=10,
                                description="A pair of shorts that won't break when you turn into a massive green "
                                            "rage monster. HULK SMASH!")
 
@@ -44,7 +43,17 @@ class PatternTestCase(TestCase):
         pattern = Pattern.objects.get(title="Incredible Shorts")
         self.assertEqual(str(pattern), "Incredible Shorts")
 
-    def test_Pattern_USer(self):
+    def test_Pattern_Likes(self):
+        pattern = Pattern.objects.get(title="Incredible Shorts")
+        likes = getattr(pattern, 'likes')
+        self.assertEqual(str(likes), '5')
+
+    def test_Pattern_Views(self):
+        pattern = Pattern.objects.get(title="Incredible Shorts")
+        views = getattr(pattern, 'views')
+        self.assertEqual(str(views), '10')
+
+    def test_Pattern_User(self):
         user = getattr(Pattern.objects.get(user=User.objects.get(username="Hulk")), 'user')
         self.assertEqual(str(user), "Hulk")
 
