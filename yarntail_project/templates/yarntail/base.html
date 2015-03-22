@@ -28,6 +28,7 @@
     <script src="{% static "js/jquery-2.1.3.js" %}"></script>
     <script src="{% static "js/ajax.js" %}"></script>
 
+
 </head>
 
 <body>
@@ -48,20 +49,30 @@
         <!--Search bar area begin----------------------->
 
 
-
-
-
         <!--will likely need to pass this in through a view somehow...-->
         {% csrf_token %}
 
-        <input type="text" id="search" name="search">
-        <button type="submit" id="search-button" class="btn btn-default" formaction="/yarntail/search_results.html">Submit</button>
-
+        <div class="row">
+            <!-- /.col-lg-6 -->
+            <div class="col-lg-6">
+                <div class="input-group">
+                    <input type="text" id="search" name="search" class="form-control" placeholder="Search for..."
+                           autocomplete="off">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" id="search-button" type="submit"
+                                formaction="/yarntail/search_results.html">
+                            Go!
+                        </button>
+                    </span>
+                </div>
+                <!-- /input-group -->
+            </div>
+            <!-- /.col-lg-6 -->
+        </div>
+        <!-- /.row -->
 
 
         <ul id="results"></ul>
-
-
 
 
         <!--Search bar area end-------------------------->
@@ -98,7 +109,6 @@
             <a href="{% url 'pattern_instructions' %}"> Pattern Instructions </a><br/>
 
 
-
             <div id="footnote">
                 {% if user.is_authenticated %}
                     <a href="{% url 'auth_logout' %}?next=/yarntail/">Log Out</a>
@@ -107,9 +117,6 @@
                     <a href="{% url 'registration_register' %}"> Sign Up</a>
                 {% endif %}
             </div>
-
-
-
 
 
         </div>
