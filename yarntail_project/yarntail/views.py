@@ -157,7 +157,7 @@ def pattern(request, username_slug, pattern_slug):
 
             if form.is_valid():
                 comment = form.save(commit=False)
-                comment.user = User.objects.get(username=username_slug)
+                comment.user = request.user
                 comment.pattern = Pattern.objects.get(slug=pattern_slug)
                 comment.save()
             else:
