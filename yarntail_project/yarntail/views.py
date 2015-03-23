@@ -1,4 +1,5 @@
 import json
+import re
 import user
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
@@ -15,6 +16,7 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 from models import *
 from haystack.query import SearchQuerySet
+
 """
 +Search
 +Trending
@@ -210,9 +212,9 @@ def upload_instructions(request):
 
 def search(request):
     # if request.method == "POST":
-    #     search_text = request.POST['search_text']
+    # search_text = request.POST['search_text']
     # else:
-    #     search_text = ''
+    # search_text = ''
     # patterns = get_patterns(max_results=10, contains=search_text)
     #
     # pat_title = ""
@@ -249,9 +251,10 @@ def get_patterns(max_results=0, contains=''):
 
 def search_results(request, query=None):
     context_dict = {}
-    patterns =[]
+    patterns = []
     context_dict['patterns'] = patterns
     if query:
+        query = query.replace("+", " ")
         query_results = SearchQuerySet().filter(content_auto=query)
         for result in query_results:
             patterns.append(Pattern.objects.get(pk=result.pk))
@@ -259,5 +262,5 @@ def search_results(request, query=None):
     return render(request, "yarntail/search_results.html", context_dict)
 
 
-    # return render(request, 'yarntail/search.html', qs)
+
 
