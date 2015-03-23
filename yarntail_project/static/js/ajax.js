@@ -1,6 +1,6 @@
 $(function () {
 
-    $('#search').keyup(function (e) {
+    $('#search').keyup(function () {
         $.ajax({
             type: "POST",
             url: "/yarntail/search/",
@@ -23,7 +23,8 @@ $(function () {
 });
 
 function searchSuccess(data, textStatus, jqXHR) {
-    //$('#results').html(data);
+    $('#results').html(data);
 
 }
+
 

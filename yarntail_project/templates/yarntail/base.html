@@ -84,6 +84,8 @@
 
                     </div>
 
+
+
             <!---------------------------->
         </div>
     </div>
@@ -103,8 +105,12 @@
             <a href="{% url 'pattern_instructions' %}"> Pattern Instructions </a><br/>
 
             <!--Search bar area begin-------------------------->
-            <ul id="results">
 
+
+            <ul id="results">
+            {% for pattern in patterns %}
+                <li><a href="{{ pattern.get_absolute_url }}">{{ pattern.title }}</a></li>
+            {% endfor %}
             </ul>
             <!--Search bar area end-------------------------->
 

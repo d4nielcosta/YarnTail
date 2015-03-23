@@ -224,10 +224,16 @@ def search(request):
     #     pat_title = pat.title
     #     #this is appending onto the current link for some reason.
     #     pat_links += '<li><a href="pattern/' + pat_user + '/' + pat_slug + '/">' + pat_title + '</a><br />'
+    context_dict = {}
+    patterns = []
+    query_results = SearchQuerySet().autocomplete(content_auto=request.POST.get('search_text', ''))
 
-    patterns = SearchQuerySet().autocomplete(content_auto=request.POST.get('search_text', ''))
+    for result in query_results:
+        patterns.append(Pattern.objects.get(pk=result.pk))
+        context_dict['patterns'] = patterns
 
-    return HttpResponse(patterns)
+    return render(request, "yarntail/base.html", context_dict)
+    #return HttpResponse(context_dict)
 
 
 def get_patterns(max_results=0, contains=''):
@@ -245,7 +251,7 @@ def search_results(request, query=None):
     patterns =[]
     context_dict['patterns'] = patterns
     if query:
-        query_results = SearchQuerySet().autocomplete(content_auto=query)
+        query_results = SearchQuerySet().filter(content_auto=query)
         for result in query_results:
             patterns.append(Pattern.objects.get(pk=result.pk))
         context_dict['patterns'] = patterns
