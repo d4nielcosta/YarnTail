@@ -12,6 +12,7 @@
 
 </div>
 
+{% if user.is_authenticated %}
 <div>
     {% if user.is_authenticated %}
     <form id="comment_form" method="post" action=".">
@@ -22,7 +23,7 @@
                 <input class="form-control" id="id_comment" maxlength="20000" name="comment_string" type="text"
                        placeholder="Enter comment"/>
       <span class="input-group-btn">
-        <button class="btn btn-default" type="submit" name="submit"> Share </button>
+        <button class="btn btn-default" type="submit" name="submit"> Share</button>
           <br/>
       </span>
             </div>
@@ -39,7 +40,7 @@
         {% for comments in comment %}
         <p>
             <strong>{{ comments.comment_string }}</strong><br/>
-            <i>@{{ comments.user }} on {{ comments.creation_date }}</i>
+            <i>@{{ comments.u }} on {{ comments.creation_date }}</i>
 
         <p/>
 
@@ -47,6 +48,7 @@
 
     </ul>
 </div>
+{% endif%}
 
 {% endblock %}
 
