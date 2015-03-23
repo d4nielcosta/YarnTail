@@ -12,8 +12,8 @@
 
         {% if patterns.count > 0 %}
             {% for pattern in patterns %}
+               <li><a href="{{ pattern.get_absolute_url }}">{{ pattern.title }}</a></li>
 
-                <li><a href="{% url 'pattern' pattern.user.user_profile.slug pattern.slug %}">{{ pattern.title }}</a></li>
 
             {% endfor %}
         {% else %}

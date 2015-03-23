@@ -40,6 +40,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'yarntail',
     'registration',
+    'whoosh',
+    'haystack',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -93,7 +95,15 @@ STATIC_PATH = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (STATIC_PATH,)
 
+#Search
+WHOOSH_INDEX = os.path.join(PROJECT_DIRECTORY,'whoosh/')
 
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': WHOOSH_INDEX,
+    },
+}
 
 #Media Files
 MEDIA_URL = '/media/'
