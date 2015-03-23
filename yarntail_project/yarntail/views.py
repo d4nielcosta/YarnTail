@@ -3,6 +3,7 @@ import user
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.core.context_processors import csrf
+from django.core.urlresolvers import reverse
 from django.forms import model_to_dict
 from django.shortcuts import render, redirect, render_to_response
 from django.http import JsonResponse
@@ -13,7 +14,7 @@ from django.http import HttpResponse
 from django.db.models import Q
 from django.contrib.auth.models import User
 from models import *
-
+from haystack.query import SearchQuerySet
 """
 +Search
 +Trending
@@ -207,24 +208,26 @@ def upload_instructions(request):
 
 
 def search(request):
-    if request.method == "POST":
-        search_text = request.POST['search_text']
-    else:
-        search_text = ''
-    patterns = get_patterns(max_results=10, contains=search_text)
+    # if request.method == "POST":
+    #     search_text = request.POST['search_text']
+    # else:
+    #     search_text = ''
+    # patterns = get_patterns(max_results=10, contains=search_text)
+    #
+    # pat_title = ""
+    # pat_slug = ""
+    # pat_user = ""
+    # pat_links = "<br />"
+    # for pat in patterns:
+    #     pat_slug = pat.slug
+    #     pat_user = pat.user.user_profile.slug
+    #     pat_title = pat.title
+    #     #this is appending onto the current link for some reason.
+    #     pat_links += '<li><a href="pattern/' + pat_user + '/' + pat_slug + '/">' + pat_title + '</a><br />'
 
-    pat_title = ""
-    pat_slug = ""
-    pat_user = ""
-    pat_links = "<br />"
-    for pat in patterns:
-        pat_slug = pat.slug
-        pat_user = pat.user.user_profile.slug
-        pat_title = pat.title
-        #this is appending onto the current link for some reason.
-        pat_links += '<li><a href="pattern/' + pat_user + '/' + pat_slug + '/">' + pat_title + '</a><br />'
+    patterns = SearchQuerySet().autocomplete(content_auto=request.POST.get('search_text', ''))
 
-    return HttpResponse(pat_links)
+    return HttpResponse(patterns)
 
 
 def get_patterns(max_results=0, contains=''):
@@ -239,11 +242,13 @@ def get_patterns(max_results=0, contains=''):
 
 def search_results(request, query=None):
     context_dict = {}
+    patterns =[]
+    context_dict['patterns'] = patterns
     if query:
-        patterns = Pattern.objects.filter(title__contains=query)
-
+        query_results = SearchQuerySet().autocomplete(content_auto=query)
+        for result in query_results:
+            patterns.append(Pattern.objects.get(pk=result.pk))
         context_dict['patterns'] = patterns
-
     return render(request, "yarntail/search_results.html", context_dict)
 
 

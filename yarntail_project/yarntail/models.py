@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
@@ -34,7 +35,6 @@ import ast
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, related_name='user_profile')
-
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     picture = models.ImageField(upload_to='profile_images', blank=True)
@@ -68,6 +68,10 @@ class Pattern(models.Model):
 
     def __unicode__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('pattern', kwargs={'username_slug': self.user.user_profile.slug, 'pattern_slug': self.slug})
+
 
 class Comment(models.Model):
     user = models.ForeignKey(User, related_name='comments')

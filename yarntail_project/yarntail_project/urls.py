@@ -17,7 +17,7 @@ urlpatterns = patterns('',
                        url(r'^yarntail/', include('yarntail.urls')),
                        url(r'^accounts/register/$', MyRegistrationView.as_view(), name='registration_register'),
                        url(r'^accounts/', include('registration.backends.simple.urls')),
-
+                       url(r'^search/', include('haystack.urls')),
                        )
 
 
