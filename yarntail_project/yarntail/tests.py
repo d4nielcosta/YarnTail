@@ -114,25 +114,25 @@ class SearchPatternTestCase(TestCase):
         # simulate a logged in user.
         request.user = self.user2
 
-        response = search_results(request, query="HulkBuster")
+        response = search_results(request, query="HulkBuster Sweater")
         #print response.content
 
         self.assertIn("HulkBuster Sweater", response.content)
 
         # test to see if user can search on patterns correctly.
-        response = search_results(request, query="Hulk")
+        response = search_results(request, query="Hulk Project")
 
         self.assertIn("Hulk Project", response.content)
 
         # new logged in user.
         request.user = self.user
 
-        response = search_results(request, query="HulkBuster")
+        response = search_results(request, query="HulkBuster Sweater")
 
         self.assertIn("HulkBuster Sweater", response.content)
 
         # test to see if user can search on patterns correctly.
-        response = search_results(request, query="Hulk")
+        response = search_results(request, query="Hulk Project")
 
         self.assertIn("Hulk Project", response.content)
 
