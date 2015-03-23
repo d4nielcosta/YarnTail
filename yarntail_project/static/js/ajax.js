@@ -16,7 +16,8 @@ $(function () {
     //});
     $('#search-button').click(function() {
         query = $('#search').val();
-        link = "/yarntail/search_results/" + query;
+        spacelessQuery = query.replace(" ", "+");
+        link = "/yarntail/search_results/" + spacelessQuery;
         window.location.replace(link);
 });
 
