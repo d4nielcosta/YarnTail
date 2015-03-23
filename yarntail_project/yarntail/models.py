@@ -1,3 +1,4 @@
+
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.contrib.auth.models import User
@@ -85,4 +86,9 @@ class Comment(models.Model):
 
     def __unicode__(self):
         return unicode(self.creation_date)
+
+
+
+
+
 

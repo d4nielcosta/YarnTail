@@ -5,6 +5,14 @@ import yarntail
 urlpatterns = patterns('',
 
                        url(r'^$', views.index_popular, name='index'),
+
+                       #search
+                       url(r'^search/$', yarntail.views.search, name='search'),
+                       url(r'^search_results/$', yarntail.views.search_results, name='search_results'),
+                       url(r'^search_results/(?P<query>[\w\-]+)$', yarntail.views.search_results,
+                           name='search_results'),
+
+
                        url(r'^index/$', views.index_popular, name='index'),
                        url(r'^index/latest/$', views.index_latest, name='index_latest'),
                        url(r'^index/popular/$', views.index_popular, name='index_popular'),
@@ -28,10 +36,7 @@ urlpatterns = patterns('',
                        #    url(r'^pattern/(?P<username_slug>[\w\-]+)/(?P<pattern_slug>[\w\-]+)/add_comment/$', views.comment, name='add_comment'),
 
 
-                       url(r'^search/$', yarntail.views.search, name='search'),
-                       url(r'^search_results/$', yarntail.views.search_results, name='search_results'),
-                       url(r'^search_results/(?P<query>[\w\-]+)$', yarntail.views.search_results,
-                           name='search_results'),
+
                        )
 
 
