@@ -21,7 +21,7 @@ class PatternForm(forms.ModelForm):
 
     class Meta:
         model = Pattern
-        fields = ('title', 'description', 'slug')
+        fields = ('title', 'description', 'difficulty', 'design') #removed slug
 
 class CommentForm(forms.ModelForm):
     class Meta:

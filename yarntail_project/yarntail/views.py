@@ -2,6 +2,7 @@ import json
 import user
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
+from django.core.context_processors import csrf
 from django.forms import model_to_dict
 from django.shortcuts import render, redirect, render_to_response
 from django.http import JsonResponse
@@ -145,7 +146,6 @@ def pattern(request, username_slug, pattern_slug):
     pattern = Pattern.objects.get(user=user, slug=pattern_slug)
     comment = Comment.objects.filter(pattern=pattern).order_by('-creation_date')
 
-    print "got to increment statement"
     pattern.views += 1
     pattern.save()
 
@@ -174,18 +174,26 @@ def pattern(request, username_slug, pattern_slug):
 
 @login_required
 def add_pattern(request):
+    c = {}
+    context_dict = {}
     if request.user.is_authenticated():
         form = PatternForm(request.GET)
         if request.method == 'POST':
+            context_dict['csrf_token'] = c.update(csrf(request))
             form = PatternForm(request.POST)
+
             if form.is_valid():
                 pattern = form.save(commit=False)
                 pattern.user = User.objects.get(id=request.user.id)
+                print "form is valid"
                 pattern.save()
+
             else:
                 print form.errors
+                return HttpResponse("Oh Shiz, yo pattern is dope. (And by that we mean the form is not valid.)")
             return redirect('pattern', pattern.user, pattern.slug)
-        return render(request, 'yarntail/add_pattern.html', {'pattern_form': form})
+        context_dict['pattern_form'] = form
+        return render(request, 'yarntail/add_pattern.html', context_dict)
     else:
         return redirect(index_popular(request))
 
