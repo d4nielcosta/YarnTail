@@ -2,6 +2,7 @@ import json
 import user
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
+from django.core.context_processors import csrf
 from django.forms import model_to_dict
 from django.shortcuts import render, redirect, render_to_response
 from django.http import JsonResponse
@@ -34,6 +35,7 @@ def index_popular(request):
 
     return render(request, 'yarntail/index_popular.html', context_dict)
 
+
 def index_latest(request):
     context_dict = {}
 
@@ -41,6 +43,7 @@ def index_latest(request):
     context_dict['latest_patterns'] = latest_patterns
 
     return render(request, 'yarntail/index_latest.html', context_dict)
+
 
 def index_all(request):
     context_dict = {}
@@ -53,6 +56,7 @@ def index_all(request):
 
 def about(request):
     return render(request, 'yarntail/about.html')
+
 
 @login_required
 def profile(request, username_slug):
@@ -98,6 +102,7 @@ def register_profile(request):
 
     return render(request, 'yarntail/profile_registration.html', {'profile_form': form})
 
+
 @login_required
 def edit_profile(request):
     if request.method == "POST":
@@ -132,6 +137,7 @@ def edit_profile(request):
 
     return render(request, 'yarntail/edit_profile.html', context_dict)
 
+
 def pattern(request, username_slug, pattern_slug):
     username = username_slug.lower()
     context_dict = {}
@@ -149,7 +155,7 @@ def pattern(request, username_slug, pattern_slug):
 
     context_dict['comment'] = comment
 
-    #Add Comment
+    # Add Comment
     if request.user.is_authenticated():
         form = CommentForm(request.GET)
         if request.method == 'POST':
@@ -163,24 +169,31 @@ def pattern(request, username_slug, pattern_slug):
             else:
                 print form.errors
 
-
     return render(request, 'yarntail/pattern.html', context_dict)
 
 
 @login_required
 def add_pattern(request):
+    c = {}
+    context_dict = {}
     if request.user.is_authenticated():
         form = PatternForm(request.GET)
         if request.method == 'POST':
+            context_dict['csrf_token'] = c.update(csrf(request))
             form = PatternForm(request.POST)
+
             if form.is_valid():
                 pattern = form.save(commit=False)
                 pattern.user = User.objects.get(id=request.user.id)
+                print "form is valid"
                 pattern.save()
+
             else:
                 print form.errors
+                return HttpResponse("Oh Shiz, yo pattern is dope. (And by that we mean the form is not valid.)")
             return redirect('pattern', pattern.user, pattern.slug)
-        return render(request, 'yarntail/add_pattern.html', {'pattern_form': form})
+        context_dict['pattern_form'] = form
+        return render(request, 'yarntail/add_pattern.html', context_dict)
     else:
         return redirect(index_popular(request))
 
@@ -198,12 +211,20 @@ def search(request):
         search_text = request.POST['search_text']
     else:
         search_text = ''
-    patterns = get_patterns(max_results = 10, contains=search_text)
-    pattern_titles = []
+    patterns = get_patterns(max_results=10, contains=search_text)
+
+    pat_title = ""
+    pat_slug = ""
+    pat_user = ""
+    pat_links = "<br />"
     for pat in patterns:
-        pattern_titles += pat.title
-    print pattern_titles
-    return HttpResponse(patterns)
+        pat_slug = pat.slug
+        pat_user = pat.user.user_profile.slug
+        pat_title = pat.title
+        #this is appending onto the current link for some reason.
+        pat_links += '<li><a href="pattern/' + pat_user + '/' + pat_slug + '/">' + pat_title + '</a><br />'
+
+    return HttpResponse(pat_links)
 
 
 def get_patterns(max_results=0, contains=''):
@@ -215,10 +236,10 @@ def get_patterns(max_results=0, contains=''):
             pattern_list = pattern_list[:max_results]
     return pattern_list
 
+
 def search_results(request, query=None):
     context_dict = {}
     if query:
-
         patterns = Pattern.objects.filter(title__contains=query)
 
         context_dict['patterns'] = patterns
@@ -226,5 +247,5 @@ def search_results(request, query=None):
     return render(request, "yarntail/search_results.html", context_dict)
 
 
-    #return render(request, 'yarntail/search.html', qs)
+    # return render(request, 'yarntail/search.html', qs)
 

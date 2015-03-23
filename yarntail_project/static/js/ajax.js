@@ -1,6 +1,6 @@
 $(function () {
 
-    $('#search').keyup(function () {
+    $('#search').keyup(function (e) {
         $.ajax({
             type: "POST",
             url: "/yarntail/search/",
@@ -12,17 +12,18 @@ $(function () {
             dataType: 'html'
         });
 
+
     });
-    $('#search-button').click(function () {
+    $('#search-button').click(function() {
         query = $('#search').val();
         link = "/yarntail/search_results/" + query;
         window.location.replace(link);
-    });
+});
+
 });
 
 function searchSuccess(data, textStatus, jqXHR) {
-
-        //$('#results').html(data);
+    //$('#results').html(data);
 
 }
 
