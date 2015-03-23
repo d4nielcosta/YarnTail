@@ -6,20 +6,17 @@
 <div class="page-header">
     <h1>{{pattern.title}}</h1>
 
-    user and pattern have been passed in as 'user' and 'pattern'
-
     views = {{ views }}
 
-    likes = {{ pattern.likes }}
+{#    likes = {{ pattern.likes }}#}
 
 </div>
 
 <div>
-
+    {% if user.is_authenticated %}
     <form id="comment_form" method="post" action=".">
 
         {% csrf_token %}
-
         <div class="col-lg-6">
             <div class="input-group">
                 <input class="form-control" id="id_comment" maxlength="20000" name="comment_string" type="text"
@@ -30,10 +27,10 @@
       </span>
             </div>
         </div>
-
     </form>
 
 </div>
+    {% endif %}
 
 <br/><br/><h2>Comments</h2>
 
