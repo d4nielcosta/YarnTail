@@ -22,7 +22,8 @@
         {% for pattern in popular_patterns %}
         <li class="list-group-item"><a href="{{pattern.get_absolute_url}}">
             {{ pattern }} -- @{{ pattern.user }}</a>
-            <p style="color: black;">{{ pattern.description }}
+            <HR WIDTH="50%" align="left">
+            <p style="color: black;">{{ pattern.description }} <br/>
                 <br/>Views: {{pattern.views }} || {{pattern.creation_date }}</p>
         </li>
         {% endfor %}
