@@ -251,10 +251,11 @@ def get_patterns(max_results=0, contains=''):
 
 def search_results(request, query=None):
     context_dict = {}
-    results_list = []
+    patterns = []
+    users = []
     p=None
     u=None
-    context_dict['results_list'] = results_list
+
     if query:
         query_results = SearchQuerySet().filter(content_auto=query)
 
@@ -276,11 +277,16 @@ def search_results(request, query=None):
                 pass
 
             if u != None:
-                results_list.append(u)
+                users.append(u)
             if p != None:
-                results_list.append(p)
+                patterns.append(p)
             u = p = None
-        context_dict['patterns'] = results_list
+
+            context_dict['users'] = users
+            context_dict['patterns'] = patterns
+            context_dict['num_users'] = len(users)
+            context_dict['num_patterns'] = len(patterns)
+
     return render(request, "yarntail/search_results.html", context_dict)
 
 def handle404(request):
