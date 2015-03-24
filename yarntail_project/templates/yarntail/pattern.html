@@ -23,8 +23,8 @@ tr {
 
 .flexy {
 	display: block;
-	height: 176px;
-	width: 528px;
+	height: 400px;
+	width: 1000px;
 	overflow: auto;
 	border-collapse: collapse;
 	table-layout: fixed;
@@ -33,19 +33,21 @@ tr {
 .standard {
 	border: 1px solid #d3d3d3;
     }
+
 </style>
 </head>
 <div class="page-header">
-    <h1>{{pattern.title}}<a href="{{ u.user_profile.get_absolute_url }}">@{{ u.username }}</a></h1>
+    <h1>{{pattern.title}} <a href="{{ u.user_profile.get_absolute_url }}"> <i style="font-size:80%">@{{ u.username }}</i></a></h1>
 
+    <div> <br/>
+        <h4>Description</h4>
+        <p>{{ pattern.description }}</p>
+        <br/>
+    </div>
 
 	<div class="row">
 	    <div class="col-md-6">
 	        <table id="pattern_grid" class="flexy"></table>
-	    </div>
-		<div class="col-md-6">
-		    <h4>Description:</h4>
-	        <div class="well">{{ pattern.description }}</div>
 	    </div>
 	</div>
 
@@ -81,7 +83,7 @@ tr {
         {% for comments in comment %}
         <p>
             <strong>{{ comments.comment_string }}</strong><br/>
-            <i>@{{ u }} on {{ comments.creation_date }}</i>
+            <i>@{{ comments.user }} on {{ comments.creation_date }}</i>
 
         <p/>
 

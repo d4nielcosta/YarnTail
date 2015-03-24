@@ -158,8 +158,6 @@ def pattern(request, username_slug, pattern_slug):
 
     context_dict['comment'] = comment
 
-    print request.user
-
     # Add Comment
     if request.user.is_authenticated():
         form = CommentForm(request.GET)
@@ -285,3 +283,6 @@ def search_results(request, query=None):
         context_dict['patterns'] = results_list
     return render(request, "yarntail/search_results.html", context_dict)
 
+def handle404(request):
+
+    return render(request, "yarntail/page_not_found.html")
