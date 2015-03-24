@@ -261,6 +261,3 @@ def search_results(request, query=None):
         context_dict['patterns'] = patterns
     return render(request, "yarntail/search_results.html", context_dict)
 
-
-
-

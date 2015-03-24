@@ -20,6 +20,7 @@ urlpatterns = patterns('',
                        url(r'^search/', include('haystack.urls')),
                        )
 
+handler404 = 'yarntail.views.index_popular'
 
 if settings.DEBUG:
     urlpatterns += patterns('django.views.static',(r'^media/(?P<path>.*)','serve',{'document_root': settings.MEDIA_ROOT}), )
