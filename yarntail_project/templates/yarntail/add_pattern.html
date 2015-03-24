@@ -58,11 +58,9 @@
         <!-- NAV TABS -->
         <ul class="nav nav-tabs nav-justified" role="tablist">
             <li role="presentation" class="active"><a href="#graphical_input" aria-controls="graphical_input" role="tab"
-                                                      data-toggle="tab">Graphical Input</a></li>
-            <li role="presentation"><a href="#text_input" aria-controls="text_input" role="tab" data-toggle="tab"
-                                       onclick="print_list(compile_pattern())">Text Input</a></li>
+                                                      data-toggle="tab">Design Input</a></li>
             <li role="presentation"><a href="#save_and_submit" aria-controls="save_and_submit" role="tab"
-                                       onclick="print_list(compile_pattern())"
+                                       onclick="map_maker()"
                                        data-toggle="tab">Save and Submit</a></li>
         </ul>
 
@@ -170,15 +168,15 @@
                                 </table>
                             </div>
                             <div class="col-md-6">
-                                <h3>Copy and Paste</h3>
+                                <h3>Copy mode</h3>
 
                                 <div class="well well-lg"><i>
-                                    You can click several stitches to select them at once. Click <b>Copy</b> to copy the
+                                    With copy mode active, you can click several stitches to select them at once. Click <b>Copy</b> to copy the
                                     selected stitches. Click <b>Paste</b> to paste the copied stitches to the selected
                                     area.
                                 </i></div>
                                 <button type="button" class="btn btn-primary btn-lg btn-block"
-                                        onclick="select_or_change()" id="copymode" disabled>Copy Mode
+                                        onclick="select_or_change()" id="copymode" class="inactive">Activate Copy Mode
                                 </button>
                                 </br>
                                 <div class="row">
@@ -231,10 +229,6 @@
                             {#                            });#}
 
 
-                            $(function () {
-                                $("#grid").selectable();
-                            });
-
                             function adjust_axis() {
                                 var xlen = document.getElementById("xInput").value;
                                 var ylen = document.getElementById("yInput").value;
@@ -282,60 +276,40 @@
 
                             }
 
-                            function compile_pattern() {
-                                var xsize = document.getElementById("xInput").value;
-                                var ysize = document.getElementById("yInput").value;
-
-                                var final_list = [];
-                                for (var y = 1; y <= ysize; y++) {
-                                    var list = [];
-                                    for (var x = 1; x <= xsize; x++) {
-                                        var imageID = x + " " + y;
-                                        var stitch_image = document.getElementById(imageID).getAttribute("src");
-                                        var stitch = "knit";
-                                        var colour = document.getElementById(imageID).getAttribute("style");
-                                        colour = colour.slice(17, 24);
-                                        switch (stitch_image) {
-                                            case "/static/images/drop.png":
-                                                stitch = "drop";
-                                                break;
-                                            case "/static/images/drop_white.png":
-                                                stitch = "drop";
-                                                break;
-                                            case "/static/images/purl.png":
-                                                stitch = "purl";
-                                                break;
-                                            case "/static/images/purl_white.png":
-                                                stitch = "purl";
-                                                break;
-                                        }
-                                        var pair = [];
-                                        pair.push(stitch);
-                                        pair.push(colour);
-                                        list.push(pair);
-                                    }
-                                    final_list.push(list);
-                                }
-                                console.log(final_list);
-                                return final_list;
-                            }
-
-                            function print_list(list) {
-                                var xsize = document.getElementById("xInput").value;
-                                var ysize = document.getElementById("yInput").value;
-                                var text = "[";
-                                for (var y = 0; y < ysize; y++) {
-                                    var row = list[y];
-                                    text += "[";
-                                    for (var x = 0; x < xsize; x++) {
-                                        var pair = row[x];
-                                        text += "[" + pair + "]";
-                                    }
-                                    text += "], ";
-                                }
-                                text += "]";
-                                document.getElementById("design_text").value = text;
-                            }
+                            
+							
+							
+						function map_maker(){
+						    var design = "";
+							var xsize = document.getElementById("xInput").value;
+							var ysize = document.getElementById("yInput").value;
+							for (var y = 1; y <= ysize; y++) {
+								for (var x = 1; x <= xsize; x++) {
+									var imageID = x + " " + y;
+									var colour = document.getElementById(imageID).getAttribute("style").slice(18, 24);
+									var stitch_image = document.getElementById(imageID).getAttribute("src");
+									var stitch = "knit";
+									switch (stitch_image) {
+										case "/static/images/drop.png":
+											stitch = "drop";
+											break;
+										case "/static/images/drop_white.png":
+											stitch = "drop_white";
+											break;
+										case "/static/images/purl.png":
+											stitch = "purl";
+											break;
+										case "/static/images/purl_white.png":
+											stitch = "purl_white";
+											break;
+									}
+									design += imageID + " " + stitch + " " + colour + " ";
+									
+									
+								}
+						    }
+							document.getElementById("design_text").value = design;
+						}
 
 
                             function select(id) {
@@ -348,11 +322,15 @@
                             }
 
                             function select_or_change() {
-                                if (document.getElementById("copymode").checked) {
+                                if (document.getElementById("copymode").class == "inactive") {
                                     change_to_select();
+									document.getElementById("copymode").setAttribute("class", "active");
+									document.getElementById("copymode").innerHTML = "Copy Mode Active";
                                 }
                                 else {
                                     change_to_switch();
+									document.getElementById("copymode").setAttribute("class", "inactive");
+									document.getElementById("copymode").innerHTML = "Activate Copy Mode";
                                 }
                             }
 
@@ -394,22 +372,7 @@
                                 return string;
                             }
 
-                            function pattern_details() {
-                                var pattern = {};
-                                pattern["title"] = document.getElementById("title").innerHTML;
-                                pattern["description"] = document.getElementById("description").innerHTML;
-                                var difficulty = "Easy";
-                                if (document.getElementById("radiohard").checked) {
-                                    difficulty = "Hard";
-                                }
-                                if (document.getElementById("radiomedium").checked) {
-                                    difficulty = "Medium";
-                                }
-                                pattern["difficulty"] = difficulty;
-                                pattern["design"] = compile_pattern();
-                                return pattern;
-
-                            }
+                            
 
 
                         </script>
@@ -417,25 +380,6 @@
                 </div>
             </div>
 
-
-            <!-- TEXT INPUT TAB -->
-            <div role="tabpanel" class="tab-pane" id="text_input">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h3>Instructions for Inputting Text</h3>
-
-                        <div class="well well-lg" id="instr">...</div>
-                        <h3>Example Pattern</h3>
-
-                        <div class="well well-lg">...</div>
-                    </div>
-                    <div class="col-md-6">
-                        <h3>Insert Pattern Text</h3>
-
-
-                    </div>
-                </div>
-            </div>
 
 
             <!-- SAVE AND SUBMIT TAB -->
