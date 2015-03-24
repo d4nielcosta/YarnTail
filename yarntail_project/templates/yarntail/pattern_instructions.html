@@ -1,19 +1,36 @@
 {% extends 'yarntail/base.html' %}
-
+{% load staticfiles %}
 {% block body_block %}
 
-<div class="page-header">
-    <h1>How To Read Your Favourite Patterns</h1>
-</div>
+    <div class="page-header">
+        <h1>How To Read Your Favourite Patterns</h1>
+    </div>
 
-<h3> Pattern reading instructions should appear here. </h3>
-
-
-<p>
-    A chart is a symbolic representation of your knitting, as seen from the right side of the work. Each symbol, or group of symbols, has a definition that tells you how to knit that stitch. Here's a very simple chart, for a k2p2 ribbing stitch:
+    <h3> Pattern reading instructions should appear here. </h3>
 
 
+    <p>
+        Unlike other knitting websites, YarnTail does not limit you to photos and typed instructions in order to
+        represent
+        knitting patterns. Pattern input is performed through an easy to use interface that represents your patterns
+        as a graph. This is then taken and converted into data that we can store on our servers. When you wants to
+        look at a pattern, we take that data and reconstruct the graphic representation for you to view.<br>
+        The end result is shown below:
+    </p>
 
 
-</p>
+    <div class="well well-lg">
+        <img id="knit_legend" src="/static/images/knit_legend.png">
+        <label for="knit_legend">Knit Stitch </label><br>
+        <img id="purl_legend" src="/static/images/purl.png">
+        <label for="purl_legend">Purl Stitch</label><br>
+        <img id="drop_legend" src="/static/images/drop.png">
+        <label for="drop_legend">Drop Stitch</label><br>
+    </div>
+    <div id=>
+        <img src="{% static 'images/ExamplePattern.png' %}"
+             style="max-width:100%;max-height:100%;margin:auto;display:block"/>
+
+
+    </div>
 {% endblock %}
