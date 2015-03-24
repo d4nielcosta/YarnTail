@@ -242,6 +242,7 @@ def get_patterns(max_results=0, contains=''):
     pattern_list = []
     if contains:
         pattern_list = Pattern.objects.filter(title__contains=contains)
+
     if max_results > 0:
         if len(pattern_list) > max_results:
             pattern_list = pattern_list[:max_results]
@@ -250,16 +251,42 @@ def get_patterns(max_results=0, contains=''):
 
 def search_results(request, query=None):
     context_dict = {}
-    patterns = []
-    context_dict['patterns'] = patterns
+    results_list = []
+    p=None
+    u=None
+    context_dict['results_list'] = results_list
     if query:
-        query = query.replace("+", " ")
         query_results = SearchQuerySet().filter(content_auto=query)
+
+
+
         for result in query_results:
-            patterns.append(Pattern.objects.get(pk=result.pk))
-        context_dict['patterns'] = patterns
+            try:
+                p = Pattern.objects.get(pk=result.pk)
+                if query.lower() not in p.lower():
+                    p = None
+            except:
+                pass
+
+            try:
+                u = UserProfile.objects.get(pk=result.pk)
+                if query.lower() not in u.user.username.lower():
+                    u = None
+            except:
+                pass
+
+            if u != None:
+                results_list.append(u)
+            if p != None:
+                results_list.append(p)
+            u = p = None
+        context_dict['patterns'] = results_list
     return render(request, "yarntail/search_results.html", context_dict)
 
 
+<<<<<<< HEAD
 def handle404(request):
     return render(request, "yarntail/page_not_found.html")
+=======
+    return render(request, "yarntail/page_not_found.html")
+>>>>>>> 9c793d949c33c9d4eba3c63cae2cad67ced260ac
