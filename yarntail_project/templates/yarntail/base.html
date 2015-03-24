@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 
 {% load staticfiles %}
 
@@ -26,8 +26,8 @@
     <![endif]-->
 
     <!--for search-->
-    <script type="text/javascript" src="{% static "js/jquery-2.1.3.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/ajax.js" %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery-2.1.3.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/ajax.js' %}"></script>
 
 
 </head>
@@ -66,8 +66,6 @@
             <!--Search-->
                     {% csrf_token %}
 
-
-
                         <div class="col-sm-3 col-md-3 pull-center">
                             <div class="input-group">
                                 <input type="text" id="search" name="search" class="form-control"
@@ -85,9 +83,6 @@
 
                     </div>
 
-
-
-            <!---------------------------->
         </div>
     </div>
 </div>
@@ -105,15 +100,12 @@
             <a href="{% url 'upload_instructions' %}"> Upload Instructions </a><br/>
             <a href="{% url 'pattern_instructions' %}"> Pattern Instructions </a><br/>
 
-            <!--Search bar area begin-------------------------->
-
 
 {#            <ul id="results">#}
 {#            {% for pattern in patterns %}#}
 {#                <li><a href="{{ pattern.get_absolute_url }}">{{ pattern.title }}</a></li>#}
 {#            {% endfor %}#}
 {#            </ul>#}
-            <!--Search bar area end-------------------------->
 
             <div id="footnote">
                 {% if user.is_authenticated %}
@@ -134,9 +126,9 @@
     </div>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
 
-<script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+<script type="text/javascript" src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
 </body>
 </html>
