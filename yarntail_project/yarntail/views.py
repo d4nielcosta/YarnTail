@@ -283,10 +283,5 @@ def search_results(request, query=None):
         context_dict['patterns'] = results_list
     return render(request, "yarntail/search_results.html", context_dict)
 
-
-<<<<<<< HEAD
 def handle404(request):
     return render(request, "yarntail/page_not_found.html")
-=======
-    return render(request, "yarntail/page_not_found.html")
->>>>>>> 9c793d949c33c9d4eba3c63cae2cad67ced260ac
