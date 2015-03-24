@@ -20,9 +20,9 @@
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="patterns" style="nopadding">
             <div>
-                {% if patterns.count > 0 %}
+                {% if patterns %}
                     {% for pattern in patterns %}
-                        <li><a href="{{ pattern.get_absolute_url }}">{{ pattern }} - Pattern</a></li>
+                        <a href="{{ pattern.get_absolute_url }}">{{ pattern }} </a> by @{{pattern.user}}<br/>
                     {% endfor %}
                 {% else %}
                     <li>No patterns match your search</li>
@@ -36,9 +36,9 @@
 
             <div>
 
-                {% if users.count > 0 %}
+                {% if users %}
                     {% for user in users %}
-                        <li><a href="{{ user.get_absolute_url }}">{{ user }} - User</a></li>
+                        <a href="{{ user.get_absolute_url }}">{{ user }} <br/>
                     {% endfor %}
                 {% endif %}
 
@@ -48,25 +48,3 @@
 
 
 {% endblock %}
-
-
-
-
-
-
-
-{#    {% if users %}#}
-{#    <h3>Users</h3>#}
-{#    {% for user in users %}#}
-{#    <a href="{{ user.get_absolute_url }}">{{ user }}</a>#}
-{#    {% endfor %}#}
-{#    {% endif %}#}
-{##}
-{#    {% if patterns %}#}
-{#    <h3>Patterns</h3>#}
-{#    {% for pattern in patterns %}#}
-{#    <a href="{{ pattern.get_absolute_url }}">{{ pattern }}</a>#}
-{#    {% endfor %}#}
-{#    {% endif %}#}
-{##}
-
