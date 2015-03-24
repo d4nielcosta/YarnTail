@@ -1,26 +1,64 @@
 {% extends 'yarntail/base.html' %}
 
 {% block body_block %}
+<head>
+<script src="/static/js/script.js"></script>
+<style>
+td {
+	padding: 0px;
+	border: 1px solid #d3d3d3;
+	min-width: 24px;
+	max-width: 24px;
+	width: 24px;
+	height: 24px;
+	text-align: center;
+	white-space: nowrap;
+	border-collapse: collapse;
+    }
 
+tr {
+	border: 1px solid #d3d3d3;
+	border-collapse: collapse;
+    }
 
+.flexy {
+	display: block;
+	height: 176px;
+	width: 528px;
+	overflow: auto;
+	border-collapse: collapse;
+	table-layout: fixed;
+    }
+
+.standard {
+	border: 1px solid #d3d3d3;
+    }
+</style>
+</head>
 <div class="page-header">
     <h1>{{pattern.title}}</h1>
+	
+	<div class="row">
+	    <div class="col-md-6">
+	        <table id="pattern_grid" class="flexy"></table>
+	    </div>
+		<div class="col-md-6">
+		    <h4>Description:</h4>
+	        <div class="well">{{ pattern.description }}</div>
+	    </div>
+	</div>
 
-    user and pattern have been passed in as 'user' and 'pattern'
-
-    views = {{ views }}
-
-    likes = {{ pattern.likes }}
+    <b>Views = </b>  {{ views }}
 
 </div>
 
+
 {% if user.is_authenticated %}
 <div>
-
+    {% if user.is_authenticated %}
     <form id="comment_form" method="post" action=".">
 
         {% csrf_token %}
-
         <div class="col-lg-6">
             <div class="input-group">
                 <input class="form-control" id="id_comment" maxlength="20000" name="comment_string" type="text"
@@ -31,10 +69,10 @@
       </span>
             </div>
         </div>
-
     </form>
 
 </div>
+    {% endif %}
 
 <br/><br/><h2>Comments</h2>
 
@@ -43,7 +81,7 @@
         {% for comments in comment %}
         <p>
             <strong>{{ comments.comment_string }}</strong><br/>
-            <i>@{{ comments.u }} on {{ comments.creation_date }}</i>
+            <i>@{{ u }} on {{ comments.creation_date }}</i>
 
         <p/>
 
@@ -52,6 +90,10 @@
     </ul>
 </div>
 {% endif%}
+
+<script>		
+convert_string("{{ pattern.design }}");
+</script>
 
 {% endblock %}
 

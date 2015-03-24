@@ -152,6 +152,7 @@ def pattern(request, username_slug, pattern_slug):
     pattern.save()
 
     context_dict['u'] = user
+
     context_dict['pattern'] = pattern
     context_dict['views'] = pattern.views
 

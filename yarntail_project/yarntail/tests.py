@@ -2,8 +2,89 @@ from django.test import TestCase, RequestFactory
 from yarntail.models import UserProfile, Pattern, Comment
 from django.contrib.auth.models import User
 from django.test import Client
-from yarntail.views import search_results
+from yarntail.views import search_results, pattern, profile
 import datetime
+
+class ProfileTestCase(TestCase):
+
+    def setUp(self):
+        # need access to the request factory
+        self.factory = RequestFactory()
+
+        self.user1 = User.objects.create_user("Hulk", "gammaradiationisfun@greenman.com", "password")
+        self.userProfile1 = UserProfile.objects.create(user=self.user1, first_name="Bruce", last_name="Banner", date_of_birth=datetime.date(1962, 5, 1))
+        self.data = "A pair of shorts that won't break when you turn into a massive green rage monster. HULK SMASH!"
+        self.pattern = Pattern.objects.create(title="Incredible Shorts", user=self.user1, difficulty="Easy", likes=5, views=10,
+                               description=self.data)
+
+        # needs a Client.
+        self.client = Client()
+
+    def test_Profile(self):
+        # Issue a GET request.
+        request = self.factory.get('/profile/')
+
+        # simulate a logged in user.
+        request.user = self.user1
+
+        request.profile = self.userProfile1
+
+        request.pattern = self.pattern
+
+        response = profile(request, request.user)
+        # print response
+
+        # check if User stored correctly
+        self.assertIn("Hulk", response.content)
+        self.assertIn("gammaradiationisfun@greenman.com", response.content)
+
+        # check if Profile stored correctly
+        self.assertIn("Bruce", response.content)
+        self.assertIn("Banner", response.content)
+
+        # check if pattern stored correctly.
+        self.assertIn("Incredible Shorts", response.content)
+
+class PatternTestCase(TestCase):
+
+    def setUp(self):
+        # need access to the request factory
+        self.factory = RequestFactory()
+
+        self.data1 = "A pair of shorts that won't break when you turn into a massive green rage monster. HULK SMASH!"
+        self.user1 = User.objects.create_user("Hulk", "gammaradiationisfun@greenman.com", "password")
+        self.userProfile1 = UserProfile.objects.create(user=self.user1, first_name="Bruce", last_name="Banner", date_of_birth=datetime.date(1962, 5, 1))
+        self.pattern = Pattern.objects.create(title="Incredible Shorts", user=self.user1, difficulty="Easy", likes=5, views=10,
+                               description=self.data1)
+
+        self.data2 = "Shorts ripped on abomination...Abomination stronger than Hulk!"
+        self.user2 = User.objects.create_user("Abomination", "abonimationrox@abom.com", "abomIsGr8")
+        self.userProfile2 = UserProfile.objects.create(user=self.user2, first_name="Emil", last_name="Blonsky", date_of_birth=datetime.date(1964, 4, 1))
+        self.comment = Comment.objects.create(user=self.user2, pattern=self.pattern,
+                               comment_string=self.data2)
+
+        # needs a Client.
+        self.client = Client()
+
+    def test_Pattern(self):
+        # Issue a GET request.
+        request = self.factory.get('/pattern/')
+
+        # simulate a logged in user.
+        request.user = self.user1
+
+        request.pattern = self.pattern
+
+        response = pattern(request, request.user, request.pattern)
+        # print response
+
+        # check if comment stored correctly
+        self.assertIn(self.data2, response.content)
+
+        # check if pattern stored.
+        self.assertIn("Incredible Shorts", response.content)
+        self.assertIn(self.data1, response.content)
+
 
 class SearchPatternTestCase(TestCase):
 
@@ -14,13 +95,13 @@ class SearchPatternTestCase(TestCase):
 
         self.user = User.objects.create_user("Hulk", "gammaradiationisfun@greenman.com", "password")
         self.userProfile = UserProfile.objects.create(user=self.user, first_name="Bruce", last_name="Banner", date_of_birth=datetime.date(1962, 5, 1))
-        self.pattern1 = Pattern.objects.create(title="Incredible Shorts", user=self.user, difficulty="Easy", likes=5, views=10,
+        self.pattern1 = Pattern.objects.create(title="Hulk Project", user=self.user, difficulty="Easy", likes=5, views=10,
                                description="A pair of shorts that won't break when you turn into a massive green "
                                            "rage monster. HULK SMASH!")
 
         self.user2 = User.objects.create_user("Abomination", "abonimationrox@abom.com", "abomIsGr8")
         self.userProfile2 = UserProfile.objects.create(user=self.user2, first_name="Emil", last_name="Blonsky", date_of_birth=datetime.date(1964, 4, 1))
-        self.pattern2 = Pattern.objects.create(title="HulkBuster Sweater", user =self.user2, difficulty="Hard", likes=6, views=15,
+        self.pattern2 = Pattern.objects.create(title="HulkBuster Sweater", user=self.user2, difficulty="Hard", likes=6, views=15,
                                           description="A sweater sporting the HulkBuster's iron face.")
 
         # needs a Client.
@@ -33,22 +114,27 @@ class SearchPatternTestCase(TestCase):
         # simulate a logged in user.
         request.user = self.user2
 
-        response = search_results(request, query="Incredible Shorts")
-        # print response
+        response = search_results(request, query="HulkBuster Sweater")
+        #print response.content
 
-        self.assertIn("Incredible Shorts", response.content)
+        self.assertIn("HulkBuster Sweater", response.content)
+
+        # test to see if user can search on patterns correctly.
+        response = search_results(request, query="Hulk Project")
+
+        self.assertIn("Hulk Project", response.content)
 
         # new logged in user.
         request.user = self.user
 
-        # test to see if user can search on patterns correctly.
         response = search_results(request, query="HulkBuster Sweater")
 
         self.assertIn("HulkBuster Sweater", response.content)
 
-        response = search_results(request, query="Incredible Shorts")
+        # test to see if user can search on patterns correctly.
+        response = search_results(request, query="Hulk Project")
 
-        self.assertIn("Incredible Shorts", response.content)
+        self.assertIn("Hulk Project", response.content)
 
 class UserProfileTestCase(TestCase):
     # Creates a user and UserProfile object and tests the required fields exist correctly.

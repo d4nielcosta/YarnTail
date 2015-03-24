@@ -6,48 +6,8 @@
     <head>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-        <link rel="stylesheet" href="/resources/demos/style.css">
-        <style>
-            td {
-                padding: 0px;
-                border: 1px solid #d3d3d3;
-                min-width: 24px;
-                max-width: 24px;
-                width: 24px;
-                height: 24px;
-                text-align: center;
-                white-space: nowrap;
-                border-collapse: collapse;
-            }
-
-            tr {
-                border: 1px solid #d3d3d3;
-                border-collapse: collapse;
-            }
-
-            .flexy {
-                display: block;
-                height: 528px;
-                width: 528px;
-                overflow: auto;
-                border-collapse: collapse;
-                table-layout: fixed;
-            }
-
-            .nopadding {
-                padding: 0px;
-                margin: 0px;
-            }
-
-            .selected {
-                border: 2px solid #C91111;
-            }
-
-            .notselected {
-                border: 1px solid #d3d3d3;
-            }
-
-        </style>
+		<script src="/static/js/script.js"></script>
+		<link rel="stylesheet" type="text/css" href="/static/css/stylesheet.css">
     </head>
 
 
@@ -58,11 +18,9 @@
         <!-- NAV TABS -->
         <ul class="nav nav-tabs nav-justified" role="tablist">
             <li role="presentation" class="active"><a href="#graphical_input" aria-controls="graphical_input" role="tab"
-                                                      data-toggle="tab">Graphical Input</a></li>
-            <li role="presentation"><a href="#text_input" aria-controls="text_input" role="tab" data-toggle="tab"
-                                       onclick="print_list(compile_pattern())">Text Input</a></li>
+                                                      data-toggle="tab">Design Input</a></li>
             <li role="presentation"><a href="#save_and_submit" aria-controls="save_and_submit" role="tab"
-                                       onclick="print_list(compile_pattern())"
+                                       onclick="map_maker()"
                                        data-toggle="tab">Save and Submit</a></li>
         </ul>
 
@@ -170,24 +128,23 @@
                                 </table>
                             </div>
                             <div class="col-md-6">
-                                <h3>Copy and Paste</h3>
+                                <h3>Copy mode (beta)</h3>
 
                                 <div class="well well-lg"><i>
-                                    You can click several stitches to select them at once. Click <b>Copy</b> to copy the
+                                    With copy mode active, you can click several stitches to select them at once. Click <b>Copy</b> to copy the
                                     selected stitches. Click <b>Paste</b> to paste the copied stitches to the selected
                                     area.
                                 </i></div>
                                 <button type="button" class="btn btn-primary btn-lg btn-block"
-                                        onclick="select_or_change()" id="copymode" disabled>Copy Mode
-                                </button>
+                                        onclick="select_or_change()" id="copymode" >Activate Copy Mode</button>
                                 </br>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <button type="button" class="btn btn-primary btn-lg btn-block" disabled>Copy
+                                        <button type="button" class="btn btn-primary btn-lg btn-block" onclick="copy()">Copy
                                         </button>
                                     </div>
                                     <div class="col-md-6">
-                                        <button type="button" class="btn btn-primary btn-lg btn-block" disabled>Paste
+                                        <button type="button" class="btn btn-primary btn-lg btn-block" onclick="paste(copylist)">Paste
                                         </button>
                                     </div>
                                 </div>
@@ -202,240 +159,12 @@
 
                         </table>
                         <script>
-
-                            //ajax submission makes form submit twice and is unnecessary,
-                            // will delete this code after these comments are submitted so they arent lost
-
-                            {#                            $("document").ready(function () {#}
-                            {##}
-                            {#                                $('form.ajax').on('submit', function () {#}
-                            {#                                    url = $(this).attr('action');#}
-                            {#                                    type = $(this).attr('method');#}
-                            {#                                    data = {};#}
-                            {#                                    $(this).find('[name]').each(function() {#}
-                            {#                                        name = $(this).attr('name');#}
-                            {#                                        value = $(this).val();#}
-                            {#                                        data[name] = value;#}
-                            {#                                    });#}
-                            {#                                    $.ajax({#}
-                            {#                                        url: url,#}
-                            {#                                        type: type,#}
-                            {#                                        data: data,#}
-                            {##}
-                            {#                                        success: function (response) {#}
-                            {#                                            alert(response);#}
-                            {#                                        }#}
-                            {#                                    });#}
-                            {#                                });#}
-                            {#                                return false;#}
-                            {#                            });#}
-
-
-                            $(function () {
-                                $("#grid").selectable();
-                            });
-
-                            function adjust_axis() {
-                                var xlen = document.getElementById("xInput").value;
-                                var ylen = document.getElementById("yInput").value;
-                                var x;
-                                var y;
-                                var text = '';
-                                for (y = 0; y <= ylen; y++) {
-                                    if (y < 1) {
-                                        text += '<td ></td>';
-                                        for (x = 1; x <= xlen; x++) {
-                                            text += '<td><b>' + x + '</b></td>';
-                                        }
-                                    } else {
-                                        text += '<tr><td><b>' + y + '</b></td>';
-                                        for (x = 1; x <= xlen; x++) {
-                                            var imageID = x + " " + y;
-                                            text += '<td><img class="notselected" id="' + imageID + '" src="/static/images/knit.png" ondrop="drop(event)" style="background-color:#FFFFFF" ondragover="allowDrop(event)" onclick="change_stitch';
-                                            text += "('" + imageID + "')" + '" alt="stitch" height="24" width="24"></td>';
-                                        }
-                                        text += '</tr>';
-                                    }
-                                }
-                                document.getElementById("grid").innerHTML = "";
-                                document.getElementById("grid").innerHTML = text;
-                            }
-
-
-                            function change_stitch(imageID) {
-                                var image = document.getElementById(imageID);
-                                if (image.src.match("knit")) {
-                                    if (image.getAttribute("style") == "background-color:#000000;") {
-                                        image.src = "/static/images/purl_white.png";
-                                    } else {
-                                        image.src = "/static/images/purl.png";
-                                    }
-                                } else if (image.src.match("purl")) {
-                                    if (image.getAttribute("style") == "background-color:#000000;") {
-                                        image.src = "/static/images/drop_white.png";
-                                    } else {
-                                        image.src = "/static/images/drop.png";
-                                    }
-                                } else {
-                                    image.src = "/static/images/knit.png";
-                                }
-
-                            }
-
-                            function compile_pattern() {
-                                var xsize = document.getElementById("xInput").value;
-                                var ysize = document.getElementById("yInput").value;
-
-                                var final_list = [];
-                                for (var y = 1; y <= ysize; y++) {
-                                    var list = [];
-                                    for (var x = 1; x <= xsize; x++) {
-                                        var imageID = x + " " + y;
-                                        var stitch_image = document.getElementById(imageID).getAttribute("src");
-                                        var stitch = "knit";
-                                        var colour = document.getElementById(imageID).getAttribute("style");
-                                        colour = colour.slice(17, 24);
-                                        switch (stitch_image) {
-                                            case "/static/images/drop.png":
-                                                stitch = "drop";
-                                                break;
-                                            case "/static/images/drop_white.png":
-                                                stitch = "drop";
-                                                break;
-                                            case "/static/images/purl.png":
-                                                stitch = "purl";
-                                                break;
-                                            case "/static/images/purl_white.png":
-                                                stitch = "purl";
-                                                break;
-                                        }
-                                        var pair = [];
-                                        pair.push(stitch);
-                                        pair.push(colour);
-                                        list.push(pair);
-                                    }
-                                    final_list.push(list);
-                                }
-                                console.log(final_list);
-                                return final_list;
-                            }
-
-                            function print_list(list) {
-                                var xsize = document.getElementById("xInput").value;
-                                var ysize = document.getElementById("yInput").value;
-                                var text = "[";
-                                for (var y = 0; y < ysize; y++) {
-                                    var row = list[y];
-                                    text += "[";
-                                    for (var x = 0; x < xsize; x++) {
-                                        var pair = row[x];
-                                        text += "[" + pair + "]";
-                                    }
-                                    text += "], ";
-                                }
-                                text += "]";
-                                document.getElementById("design_text").value = text;
-                            }
-
-
-                            function select(id) {
-                                if (document.getElementById(id).class == "selected") {
-                                    document.getElementById(id).setAttribute("class", "notselected");
-                                }
-                                else {
-                                    document.getElementById(id).setAttribute("class", "selected");
-                                }
-                            }
-
-                            function select_or_change() {
-                                if (document.getElementById("copymode").checked) {
-                                    change_to_select();
-                                }
-                                else {
-                                    change_to_switch();
-                                }
-                            }
-
-                            function change_to_select() {
-                                for (var y = 1; y <= document.getElementById("yInput").value; y++) {
-                                    for (var x = 1; x <= document.getElementById("xInput").value; x++) {
-                                        id = x + ' ' + y;
-                                        document.getElementById(id).setAttribute("onclick", "select('" + id + "')");
-                                    }
-                                }
-                            }
-
-                            function change_to_switch() {
-                                for (var y = 1; y <= document.getElementById("yInput").value; y++) {
-                                    for (var x = 1; x <= document.getElementById("xInput").value; x++) {
-                                        id = x + ' ' + y;
-                                        document.getElementById(id).setAttribute("onclick", "change_stitch('" + id + "')");
-                                    }
-                                }
-                            }
-
-
-                            function allowDrop(ev) {
-                                ev.preventDefault();
-                            }
-
-                            function drag(ev) {
-                                ev.dataTransfer.setData("text", ev.target.id);
-                            }
-
-                            function drop(ev) {
-                                ev.preventDefault();
-                                var data = ev.dataTransfer.getData("text");
-                                ev.target.setAttribute("style", ('background-color:' + data + ';'));
-                            }
-
-                            function list_to_string(list) {
-                                var string = json.loads(list);
-                                return string;
-                            }
-
-                            function pattern_details() {
-                                var pattern = {};
-                                pattern["title"] = document.getElementById("title").innerHTML;
-                                pattern["description"] = document.getElementById("description").innerHTML;
-                                var difficulty = "Easy";
-                                if (document.getElementById("radiohard").checked) {
-                                    difficulty = "Hard";
-                                }
-                                if (document.getElementById("radiomedium").checked) {
-                                    difficulty = "Medium";
-                                }
-                                pattern["difficulty"] = difficulty;
-                                pattern["design"] = compile_pattern();
-                                return pattern;
-
-                            }
-
-
+                        var copylist = []
                         </script>
                     </div>
                 </div>
             </div>
 
-
-            <!-- TEXT INPUT TAB -->
-            <div role="tabpanel" class="tab-pane" id="text_input">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h3>Instructions for Inputting Text</h3>
-
-                        <div class="well well-lg" id="instr">...</div>
-                        <h3>Example Pattern</h3>
-
-                        <div class="well well-lg">...</div>
-                    </div>
-                    <div class="col-md-6">
-                        <h3>Insert Pattern Text</h3>
-
-
-                    </div>
-                </div>
-            </div>
 
 
             <!-- SAVE AND SUBMIT TAB -->

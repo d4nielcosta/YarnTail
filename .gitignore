@@ -57,3 +57,6 @@ target/
 # Database
 *.sqlite3
 .DS_Store
+
+# Whoosh
+*/whoosh/*
