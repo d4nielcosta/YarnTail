@@ -286,6 +286,7 @@ def search_results(request, query=None):
             context_dict['patterns'] = patterns
             context_dict['num_users'] = len(users)
             context_dict['num_patterns'] = len(patterns)
+            context_dict['num_all'] = len(patterns) + len(users)
 
     return render(request, "yarntail/search_results.html", context_dict)
 
