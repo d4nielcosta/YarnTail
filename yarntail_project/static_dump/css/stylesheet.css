@@ -36,3 +36,46 @@ h1 {
     font-family: "verdana";
     font-size: 30px;
     }
+	
+td {
+	padding: 0px;
+	border: 1px solid #d3d3d3;
+	min-width: 24px;
+	max-width: 24px;
+	width: 24px;
+	height: 24px;
+	text-align: center;
+	white-space: nowrap;
+	border-collapse: collapse;
+    }
+
+tr {
+	border: 1px solid #d3d3d3;
+	border-collapse: collapse;
+    }
+
+.flexy {
+	display: block;
+	height: 528px;
+	width: 528px;
+	overflow: auto;
+	border-collapse: collapse;
+	table-layout: fixed;
+    }
+
+.nopadding {
+	padding: 0px;
+	margin: 0px;
+    }
+
+.selected {
+	border: 2px solid #C91111;
+    }
+
+.notselected {
+	border: 1px solid #d3d3d3;
+    }
+
+.copied{
+	border: 1px dashed #C91111;
+    }
