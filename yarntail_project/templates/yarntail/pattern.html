@@ -1,39 +1,40 @@
 {% extends 'yarntail/base.html' %}
 
 {% block body_block %}
-
+<head>
+<script src="/static/js/script.js"></script>
 <style>
-            td {
-                padding: 0px;
-                border: 1px solid #d3d3d3;
-                min-width: 24px;
-                max-width: 24px;
-                width: 24px;
-                height: 24px;
-                text-align: center;
-                white-space: nowrap;
-                border-collapse: collapse;
-            }
+td {
+	padding: 0px;
+	border: 1px solid #d3d3d3;
+	min-width: 24px;
+	max-width: 24px;
+	width: 24px;
+	height: 24px;
+	text-align: center;
+	white-space: nowrap;
+	border-collapse: collapse;
+    }
 
-            tr {
-                border: 1px solid #d3d3d3;
-                border-collapse: collapse;
-            }
+tr {
+	border: 1px solid #d3d3d3;
+	border-collapse: collapse;
+    }
 
-            .flexy {
-                display: block;
-                height: 176px;
-                width: 528px;
-                overflow: auto;
-                border-collapse: collapse;
-                table-layout: fixed;
-            }
+.flexy {
+	display: block;
+	height: 176px;
+	width: 528px;
+	overflow: auto;
+	border-collapse: collapse;
+	table-layout: fixed;
+    }
 
-            .standard {
-                border: 1px solid #d3d3d3;
-            }
-
-        </style>
+.standard {
+	border: 1px solid #d3d3d3;
+    }
+</style>
+</head>
 <div class="page-header">
     <h1>{{pattern.title}}</h1>
 	
@@ -48,21 +49,9 @@
 	</div>
 
     <b>Views = </b>  {{ views }}
-	
-
-	
-	
-	
 
 </div>
 
-
-
-    views = {{ views }}
-
-{#    likes = {{ pattern.likes }}#}
-
-</div>
 
 {% if user.is_authenticated %}
 <div>
@@ -102,74 +91,8 @@
 </div>
 {% endif%}
 
-<script>
-function convert_string(string){
-    var list = string.split(" ");
-	var new_list = [];
-    var xmax = 1;
-	var ymax = 1;
-    for (var i = 0; i <= list.length-2; i++){
-		if (i%4 == 0){
-		    xmax = Number(list[i]);
-		}
-		if (i%4 == 1){
-		    ymax = Number(list[i]);
-		}
-		if (i%4 == 2){
-		    new_list.push(String(list[i]));
-		}
-		if (i%4 == 3){
-		    new_list.push(String(list[i]));
-		}
-	}
-	var text = "";
-	var iter = 0;
-	for (var y = 0; y <= ymax; y++){
-	    if (y<1){
-				text += '<td></td>';
-				for (var x = 1; x <= xmax; x++) {
-					text += '<td><b>' + x + '</b></td>';
-					}
-		}else{
-				text += '<tr><td><b>' + y + '</b></td>';
-				for (x = 1; x <= xmax; x++) {
-					var stitch = new_list[iter];
-				    var colour = new_list[iter+1];
-					iter += 2;
-					text += '<td><img  class="standard" ';
-					var img_src = "";
-					switch(stitch){
-						case "drop":
-							img_src = "/static/images/drop.png";
-							break;
-						case "drop_white":
-							img_src = "/static/images/drop_white.png";
-							break;
-						case "purl":
-							img_src = "/static/images/purl.png";
-							break;
-						case "purl_white":
-							img_src = "/static/images/purl_white.png";
-							break;
-						case "knit":
-							img_src = "/static/images/knit.png";
-							break;
-					    }
-					text += 'src="' + img_src + '" ';
-					text += 'style="background-color:#' + colour;
-					text += '" alt="stitch" height="24" width="24"></td>';
-					}
-				text += '</tr>';
-				}
-		    }
-			document.getElementById("pattern_grid").innerHTML = text;
-	}
-	
-
-
-		
+<script>		
 convert_string("{{ pattern.design }}");
-
 </script>
 
 {% endblock %}
