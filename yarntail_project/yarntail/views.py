@@ -259,17 +259,20 @@ def search_results(request, query=None):
     context_dict['results_list'] = results_list
     if query:
         query_results = SearchQuerySet().filter(content_auto=query)
+
+
+
         for result in query_results:
             try:
                 p = Pattern.objects.get(pk=result.pk)
-                if query not in p:
+                if query.lower() not in p.lower():
                     p = None
             except:
                 pass
 
             try:
                 u = UserProfile.objects.get(pk=result.pk)
-                if query not in u.user.username:
+                if query.lower() not in u.user.username.lower():
                     u = None
             except:
                 pass
