@@ -11,8 +11,8 @@
     <div>
 
         {% if patterns.count > 0 %}
-            {% for pattern in patterns %}
-               <li><a href="{{ pattern.get_absolute_url }}">{{ pattern.title }}</a></li>
+            {% for results_list in patterns %}
+               <li><a href="{{ results_list.get_absolute_url }}">{{ results_list }}</a></li>
 
 
             {% endfor %}
