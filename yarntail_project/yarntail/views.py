@@ -260,3 +260,6 @@ def search_results(request, query=None):
         context_dict['patterns'] = patterns
     return render(request, "yarntail/search_results.html", context_dict)
 
+def handle404(request):
+
+    return render(request, "yarntail/page_not_found.html")

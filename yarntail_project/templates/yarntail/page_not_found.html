@@ -1,0 +1,32 @@
+{% extends 'yarntail/base.html' %}
+
+{% load staticfiles %}
+{% block body_block %}
+
+<div class="page-header">
+    <h1>Oops... We couldn't find what you were looking for.</h1>
+</div>
+
+<div id="float">
+    <div id="left">
+        The page you were looking does not exist or is no longer available. <br/> <br/>
+
+        Please go back to the <a href="{% url 'index' %}">index page</a> and try again.
+        <br/><br/>
+        Do you believe this is a mistake?
+        Drop us an email on:
+        <a href="mailto:yarntail@mail.com?Subject=Error%20PageNotFound" target="_top">Send Mail</a>
+
+
+        <h3> We're sorry for any inconvenience this may have caused you.</h3>
+
+
+    </div>
+    <div id="right" style="height:500px; width:500px">
+        <img src="{% static 'images/404.jpg' %}"
+             style="max-width:100%;max-height:100%;margin:auto;display:block"/>
+    </div>
+
+
+
+</div>
