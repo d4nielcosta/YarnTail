@@ -4,21 +4,25 @@
 {% block body_block %}
 
 <div class="page-header">
-    <h1>Oops... We couldn't find what you were looking for.</h1>
+    <h1>(404) Oops... We couldn't find what you were looking for.</h1>
 </div>
 
 <div id="float">
     <div id="left">
+        <p>
         The page you were looking does not exist or is no longer available. <br/> <br/>
 
-        Please go back to the <a href="{% url 'index' %}">index page</a> and try again.
-        <br/><br/>
+        Please go back to the <a href="{% url 'index' %}">home page</a> and try again.
+        <br/><br/><br/><br/>
         Do you believe this is a mistake?
+            <br/><br/>
         Drop us an email on:
         <a href="mailto:yarntail@mail.com?Subject=Error%20PageNotFound" target="_top">Send Mail</a>
 
 
-        <h3> We're sorry for any inconvenience this may have caused you.</h3>
+        <br/><br/><br/><br/><br/><strong> We're sorry for any inconvenience this may have caused you.</strong>
+
+        </p><br/>
 
 
     </div>
@@ -30,3 +34,5 @@
 
 
 </div>
+
+{% endblock %}

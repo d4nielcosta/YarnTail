@@ -20,6 +20,7 @@ urlpatterns = patterns('',
                        url(r'^search/', include('haystack.urls')),
                        )
 
+handler400 = 'yarntail.views.handle404'
 handler404 = 'yarntail.views.handle404'
 handler500 = 'yarntail.views.handle404'
 
