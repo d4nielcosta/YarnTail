@@ -20,7 +20,7 @@
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="patterns" style="nopadding">
             <div>
-                {% if patterns.count > 0 %}
+                {% if patterns %}
                     {% for pattern in patterns %}
                         <li><a href="{{ pattern.get_absolute_url }}">{{ pattern }} - Pattern</a></li>
                     {% endfor %}
@@ -36,7 +36,7 @@
 
             <div>
 
-                {% if users.count > 0 %}
+                {% if users %}
                     {% for user in users %}
                         <li><a href="{{ user.get_absolute_url }}">{{ user }} - User</a></li>
                     {% endfor %}
