@@ -27,7 +27,7 @@
 
                 {% if patterns %}
                     {% for pattern in patterns %}
-                        <li><a href="{{ pattern.get_absolute_url }}">{{ pattern }} - Pattern</a></li>
+                        <a href="{{ pattern.get_absolute_url }}">{{ pattern }} </a> by @{{pattern.user}}<br/>
                     {% endfor %}
                 {% else %}
                     <li>No patterns match your search</li>
@@ -41,7 +41,7 @@
             <div>
                 {% if users %}
                     {% for user in users %}
-                        <li><a href="{{ user.get_absolute_url }}">{{ user }} - User</a></li>
+                        <a href="{{ user.get_absolute_url }}">{{ user }} <br/>
                     {% endfor %}
                 {% else %}
                     <li>No users match your search</li>
@@ -53,25 +53,3 @@
 
 
 {% endblock %}
-
-
-
-
-
-
-
-{#    {% if users %}#}
-{#    <h3>Users</h3>#}
-{#    {% for user in users %}#}
-{#    <a href="{{ user.get_absolute_url }}">{{ user }}</a>#}
-{#    {% endfor %}#}
-{#    {% endif %}#}
-{##}
-{#    {% if patterns %}#}
-{#    <h3>Patterns</h3>#}
-{#    {% for pattern in patterns %}#}
-{#    <a href="{{ pattern.get_absolute_url }}">{{ pattern }}</a>#}
-{#    {% endfor %}#}
-{#    {% endif %}#}
-{##}
-
