@@ -62,8 +62,8 @@ def about(request):
 
 
 @login_required
-def profile(request, username_slug):
-    u = User.objects.get(username=username_slug)
+def profile(request, username):
+    u = User.objects.get(username=username)
     context_dict = {}
 
     try:
@@ -73,7 +73,7 @@ def profile(request, username_slug):
 
     patterns = Pattern.objects.filter(user=u).order_by('-views')
 
-    context_dict['user'] = u
+    context_dict['u'] = u
     context_dict['userprofile'] = user_profile
     context_dict['patterns'] = patterns
 

@@ -1,4 +1,3 @@
-
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.contrib.auth.models import User
@@ -6,7 +5,7 @@ from django.template.defaultfilters import slugify
 import ast
 
 # class ListField(models.TextField):
-#     __metaclass__ = models.SubfieldBase
+# __metaclass__ = models.SubfieldBase
 #     description = "Stores a python list"
 #
 #     def __init__(self, *args, **kwargs):
@@ -50,6 +49,9 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.user.username
 
+    def get_absolute_url(self):
+        return reverse('profile', kwargs={'username': self.user.username})
+
 
 class Pattern(models.Model):
     title = models.CharField(max_length=128,
@@ -61,7 +63,7 @@ class Pattern(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(unique=True)
     design = models.CharField(max_length=10000, default="empty pattern")
-    difficulty = models.CharField(default = "Easy", max_length=10)
+    difficulty = models.CharField(default="Easy", max_length=10)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)

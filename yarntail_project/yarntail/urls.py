@@ -23,7 +23,7 @@ urlpatterns = patterns('',
 
                        # Profile Related
                        url(r'^profile/edit/$', views.edit_profile, name='edit_profile'),
-                       url(r'^profile/(?P<username_slug>[\w\-]+)/$', views.profile, name='profile'),
+                       url(r'^profile/(?P<username>[\w\-]+)/$', views.profile, name='profile'),
                        url(r'add_profile/$', views.register_profile, name='add_profile'),
 
                        #Pattern Related
