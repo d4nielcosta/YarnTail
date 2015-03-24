@@ -81,7 +81,7 @@ tr {
         {% for comments in comment %}
         <p>
             <strong>{{ comments.comment_string }}</strong><br/>
-            <i>@{{ u }} on {{ comments.creation_date }}</i>
+            <i>@{{ comments.user }} on {{ comments.creation_date }}</i>
 
         <p/>
 
