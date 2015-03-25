@@ -242,6 +242,7 @@ def get_patterns(max_results=0, contains=''):
     pattern_list = []
     if contains:
         pattern_list = Pattern.objects.filter(title__contains=contains)
+
     if max_results > 0:
         if len(pattern_list) > max_results:
             pattern_list = pattern_list[:max_results]
@@ -251,15 +252,45 @@ def get_patterns(max_results=0, contains=''):
 def search_results(request, query=None):
     context_dict = {}
     patterns = []
-    context_dict['patterns'] = patterns
+    users = []
+    p=None
+    u=None
+
     if query:
-        query = query.replace("+", " ")
         query_results = SearchQuerySet().filter(content_auto=query)
+
+
+
         for result in query_results:
-            patterns.append(Pattern.objects.get(pk=result.pk))
-        context_dict['patterns'] = patterns
+            try:
+                p = Pattern.objects.get(pk=result.pk)
+                if query.lower() not in p.lower():
+                    p = None
+            except:
+                pass
+
+            try:
+                u = UserProfile.objects.get(pk=result.pk)
+                if query.lower() not in u.user.username.lower():
+                    u = None
+            except:
+                pass
+
+            if u != None:
+                users.append(u)
+            if p != None:
+                patterns.append(p)
+            u = p = None
+
+            context_dict['users'] = users
+            context_dict['patterns'] = patterns
+            context_dict['num_users'] = len(users)
+            context_dict['num_patterns'] = len(patterns)
+            context_dict['num_all'] = len(patterns) + len(users)
+
     return render(request, "yarntail/search_results.html", context_dict)
 
+<<<<<<< HEAD
 def edit_pattern(request, username_slug, pattern_slug):
     c = {}
     context_dict = {}
@@ -307,3 +338,5 @@ def edit_pattern(request, username_slug, pattern_slug):
 ##    
 ##    return render(request, 'yarntail/edit_pattern.html', context_dict)
 
+def handle404(request):
+    return render(request, "yarntail/page_not_found.html")

@@ -8,20 +8,48 @@
         <h1>Search Results</h1>
     </div>
 
-    <div>
-
-        {% if patterns.count > 0 %}
-            {% for pattern in patterns %}
-               <li><a href="{{ pattern.get_absolute_url }}">{{ pattern.title }}</a></li>
+    <ul class="nav nav-tabs nav-justified" id="usertab" role="tablist">
 
 
-            {% endfor %}
-        {% else %}
-            <li>No patterns match your search</li>
-        {% endif %}
+        <li role="presentation">
+            <a href="#patterns" aria-controls="patterns" role="tab"
+               data-toggle="tab">Patterns <span class="badge">{{ num_patterns }}</span></a></li>
+        <li role="presentation"><a href="#users" aria-controls="users" role="tab"
+                                   data-toggle="tab">Users <span class="badge">{{ num_users }}</span></a></li>
 
+    </ul>
+
+    <div class="tab-content">
+
+
+        <div role="tabpanel" class="tab-pane active" id="patterns" style="nopadding">
+            <div>
+
+                {% if patterns %}
+                    {% for pattern in patterns %}
+                        <a href="{{ pattern.get_absolute_url }}">{{ pattern }} </a> by @{{pattern.user}}<br/>
+                    {% endfor %}
+                {% else %}
+                    <li>No patterns match your search</li>
+                {% endif %}
+
+            </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane active" id="users" style="nopadding">
+
+            <div>
+                {% if users %}
+                    {% for user in users %}
+                        <a href="{{ user.get_absolute_url }}">{{ user }} <br/>
+                    {% endfor %}
+                {% else %}
+                    <li>No users match your search</li>
+                {% endif %}
+
+            </div>
+        </div>
     </div>
 
+
 {% endblock %}
-
-
