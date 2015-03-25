@@ -205,6 +205,7 @@ def edit_pattern(request, username_slug, pattern_slug):
 def add_pattern(request):
     c = {}
     context_dict = {}
+    pattern = None
     if request.user.is_authenticated():
         form = PatternForm(request.GET)
         if request.method == 'POST':
@@ -218,7 +219,10 @@ def add_pattern(request):
 
             else:
                 print form.errors
-            return redirect('pattern', pattern.user, pattern.slug)
+            try:
+                return redirect('pattern', pattern.user, pattern.slug)
+            except:
+                return handle404(request)
         context_dict['pattern_form'] = form
         return render(request, 'yarntail/add_pattern.html', context_dict)
     else:
