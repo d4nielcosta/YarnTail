@@ -172,7 +172,7 @@
 
             <!-- SAVE AND SUBMIT TAB -->
             <div role="tabpanel" class="tab-pane" id="save_and_submit">
-                <form action="{% url "add_pattern" %}" name="pattern-form" id="pattern-form" method="post" class="ajax">
+                <form action="{% url 'add_pattern' %}" name="pattern-form" id="pattern-form" method="post" class="ajax">
                     {% csrf_token %}
 
                     <div class="row">
@@ -190,7 +190,7 @@
                                 <label for="radiohard">Hard</label>
                             </div>
                             <div class="radio">
-                                <input type="radio" name="difficulty" id="radiomedium" value="option2"
+                                <input type="radio" name="difficulty" id="radiomedium" value="option2">
                                 <label for="radiomedium">Medium</label>
                             </div>
                             <div class="radio">
@@ -219,6 +219,8 @@
                                 </button>
                             </div>
                         </div>
+                        </div>
+                        </form>
                     </div>
 
             </div>
