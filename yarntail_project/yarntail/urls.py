@@ -37,9 +37,6 @@ urlpatterns = patterns('',
                        #Comment
                        #    url(r'^pattern/(?P<username_slug>[\w\-]+)/(?P<pattern_slug>[\w\-]+)/add_comment/$', views.comment, name='add_comment'),
 
-
-
-
                        )
 
 

@@ -175,6 +175,32 @@ def pattern(request, username_slug, pattern_slug):
     return render(request, 'yarntail/pattern.html', context_dict)
 
 
+def edit_pattern(request, username_slug, pattern_slug):
+    c = {}
+    context_dict = {}
+    if request.user.is_authenticated():
+        pattern = Pattern.objects.get(slug=pattern_slug)
+        form = PatternForm(request.POST, instance=pattern)
+        if request.method == 'POST':
+            context_dict['csrf_token'] = c.update(csrf(request))
+            form = PatternForm(request.POST, instance=pattern)
+            print "user authenticated"
+            if form.is_valid():
+                print "form valid"
+                patternform = form.save(commit=False)
+                patternform.user = User.objects.get(id=request.user.id)
+                patternform.save()
+            else:
+                print form.errors
+            return redirect('pattern', pattern.user, pattern.slug)
+        context_dict['pattern_form'] = form
+        context_dict['pattern'] = pattern
+        context_dict['u'] = request.user
+        return render(request, 'yarntail/edit_pattern.html', context_dict)
+    else:
+        return redirect(index_popular(request))
+
+
 @login_required
 def add_pattern(request):
     c = {}
@@ -188,7 +214,6 @@ def add_pattern(request):
             if form.is_valid():
                 pattern = form.save(commit=False)
                 pattern.user = User.objects.get(id=request.user.id)
-                print "form is valid"
                 pattern.save()
 
             else:
@@ -290,52 +315,7 @@ def search_results(request, query=None):
     return render(request, "yarntail/search_results.html", context_dict)
 
 
-def edit_pattern(request, username_slug, pattern_slug):
-    c = {}
-    context_dict = {}
-    print "in edit pattern"
-    if request.user.is_authenticated():
-        print "request="+request
-        
-        ##pattern = Pattern.objects.get(
-        form = PatternForm(request.POST, instance=pattern)
-        if request.method == 'POST':
-            context_dict['csrf_token'] = c.update(csrf(request))
-            form = PatternForm(request.POST)
 
-            if form.is_valid():
-                pattern = form.save(commit=False)
-                pattern.user = User.objects.get(id=request.user.id)
-                print "form is valid"
-                pattern.save()
-
-            else:
-                print form.errors
-                return HttpResponse("Oh Shiz, yo pattern is dope. (And by that we mean the form is not valid.)")
-            return redirect('pattern', pattern.user, pattern.slug)
-        context_dict['pattern_form'] = form
-        return render(request, 'yarntail/add_pattern.html', context_dict)
-    else:
-        return redirect(index_popular(request))
-
-
-
-    
-##    username = username_slug.lower()
-##    context_dict = {}
-##    profile = UserProfile.objects.get(slug=username)
-##    user = User.objects.get(user_profile=profile)
-##    pattern = Pattern.objects.get(user=user, slug=pattern_slug)
-##    comment = Comment.objects.filter(pattern=pattern).order_by('-creation_date')
-##
-##    pattern.save()
-##    
-##    context_dict['u'] = user
-##    context_dict['pattern'] = pattern
-##    context_dict['views'] = pattern.views
-##    context_dict['comment'] = comment
-##    
-##    return render(request, 'yarntail/edit_pattern.html', context_dict)
 
 def handle404(request):
     return render(request, "yarntail/page_not_found.html")
