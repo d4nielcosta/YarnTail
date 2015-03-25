@@ -289,7 +289,7 @@ def search_results(request, query=None):
 
     return render(request, "yarntail/search_results.html", context_dict)
 
-<<<<<<< HEAD
+
 def edit_pattern(request, username_slug, pattern_slug):
     c = {}
     context_dict = {}
