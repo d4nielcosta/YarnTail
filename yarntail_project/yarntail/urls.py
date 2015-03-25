@@ -32,6 +32,12 @@ urlpatterns = patterns('',
                        url(r'^pattern_instructions/$', views.pattern_instructions, name='pattern_instructions'),
                        url(r'^upload_instructions/$', views.upload_instructions, name='upload_instructions'),
                        url(r'^add_pattern/$', views.add_pattern, name='add_pattern'),
+                       url(r'^edit_pattern/(?P<username_slug>[\w\-]+)/(?P<pattern_slug>[\w\-]+)/$', views.edit_pattern,
+                           name='edit_pattern'),
+                       #Comment
+                       #    url(r'^pattern/(?P<username_slug>[\w\-]+)/(?P<pattern_slug>[\w\-]+)/add_comment/$', views.comment, name='add_comment'),
+
+
 
 
                        )
