@@ -12,6 +12,7 @@ Create a database:
 	python manage.py migrate
 	python populate_yarntail.py
 	python manage.py rebuild_index (Important for the search functionality)
+	    -- When prompted, confirm the action by entering 'y'
 
 Good to go!
 
