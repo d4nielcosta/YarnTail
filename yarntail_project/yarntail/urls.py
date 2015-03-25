@@ -35,6 +35,7 @@ urlpatterns = patterns('',
                        url(r'^edit_pattern/(?P<username_slug>[\w\-]+)/(?P<pattern_slug>[\w\-]+)/$', views.edit_pattern, name='edit_pattern'),
 
 
+
                        )
 
 

@@ -57,6 +57,11 @@ tr {
 
 
 {% if user.is_authenticated %}
+
+    {% if user == u %}
+      <a href="{% url 'edit_pattern' u.user_profile pattern.slug %}"  >Edit Pattern</a>
+    {% endif %}
+
 <div>
     {% if user.is_authenticated %}
     <form id="comment_form" method="post" action=".">

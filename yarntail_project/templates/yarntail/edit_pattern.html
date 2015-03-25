@@ -162,6 +162,7 @@
 
                         </table>
                         <script>
+
                         var copylist = []
                         </script>
                     </div>
@@ -172,7 +173,7 @@
 
             <!-- SAVE AND SUBMIT TAB -->
             <div role="tabpanel" class="tab-pane" id="save_and_submit">
-                <form action="{% url 'edit_pattern' username_slug pattern_slug %}" name="pattern-form" id="pattern-form" method="post" class="ajax">
+                <form action="{% url 'edit_pattern' u.user_profile pattern.slug %}" name="pattern-form" id="pattern-form" method="post" class="ajax">
                     {% csrf_token %}
 
                     <div class="row">
@@ -229,6 +230,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+
+
+
     </body>
 
 
