@@ -3,38 +3,7 @@
 {% block body_block %}
 <head>
 <script src="/static/js/script.js"></script>
-<style>
-td {
-	padding: 0px;
-	border: 1px solid #d3d3d3;
-	min-width: 24px;
-	max-width: 24px;
-	width: 24px;
-	height: 24px;
-	text-align: center;
-	white-space: nowrap;
-	border-collapse: collapse;
-    }
 
-tr {
-	border: 1px solid #d3d3d3;
-	border-collapse: collapse;
-    }
-
-.flexy {
-	display: block;
-	height: 400px;
-	width: 1000px;
-	overflow: auto;
-	border-collapse: collapse;
-	table-layout: fixed;
-    }
-
-.standard {
-	border: 1px solid #d3d3d3;
-    }
-
-</style>
 </head>
 <div class="page-header">
     <h1>{{pattern.title}} <a href="{{ u.user_profile.get_absolute_url }}"> <i style="font-size:80%">@{{ u.username }}</i></a></h1>
@@ -62,7 +31,8 @@ tr {
       <a href="{% url 'edit_pattern' u.user_profile pattern.slug %}"  >Edit Pattern</a>
     {% endif %}
 
-<div>
+
+<div><br/>
     {% if user.is_authenticated %}
     <form id="comment_form" method="post" action=".">
 
