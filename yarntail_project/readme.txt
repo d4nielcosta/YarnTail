@@ -16,5 +16,17 @@ Create a database:
 Good to go!
 
 
+-----------------
+Notes about GitHub repository
+
+Due to issues with version control systems, we were forced to move repositories twice.
+
+Current & final: https://github.com/d4nielcosta/YarnTail
+
+Previous Repositories:
+https://github.com/d4nielcosta/YarnTail2
+https://github.com/d4nielcosta/YarnTail--backup
+-------------------
+
 Best Regards,
 The YarnTail Community
