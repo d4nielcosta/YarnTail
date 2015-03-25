@@ -193,7 +193,6 @@ def add_pattern(request):
 
             else:
                 print form.errors
-                return HttpResponse("Oh Shiz, yo pattern is dope. (And by that we mean the form is not valid.)")
             return redirect('pattern', pattern.user, pattern.slug)
         context_dict['pattern_form'] = form
         return render(request, 'yarntail/add_pattern.html', context_dict)

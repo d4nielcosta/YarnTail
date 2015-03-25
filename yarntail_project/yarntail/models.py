@@ -62,7 +62,7 @@ class Pattern(models.Model):
     description = models.CharField(max_length=3000)
     creation_date = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(unique=True)
-    design = models.CharField(max_length=10000, default="empty pattern")
+    design = models.CharField(max_length=100000, default="empty pattern")
     difficulty = models.CharField(default="Easy", max_length=10)
 
     def save(self, *args, **kwargs):
