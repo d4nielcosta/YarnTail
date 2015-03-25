@@ -53,13 +53,13 @@
 
 
                 {% if user.is_authenticated %}
-                    <li><a id="blackBack" href="{% url 'add_pattern' %}">New Pattern</a></li>
-                    <li><a id="blackBack" href="{% url 'profile' user.username %}">Profile</a></li>
-                    <li><a id="blackBack" href="{% url 'about' %}">About Us</a></li>
-                    <li><a id="blackBack" href="{% url 'auth_logout' %}?next=/yarntail/">Log Out</a></li>
+                    <li><a class="blackBack" href="{% url 'add_pattern' %}">New Pattern</a></li>
+                    <li><a class="blackBack" href="{% url 'profile' user.username %}">Profile</a></li>
+                    <li><a class="blackBack" href="{% url 'about' %}">About Us</a></li>
+                    <li><a class="blackBack" href="{% url 'auth_logout' %}?next=/yarntail/">Log Out</a></li>
                 {% else %}
-                    <li><a id="blackBack" href="{% url 'auth_login' %}">Log In</a></li>
-                    <li><a id="blackBack" href="{% url 'registration_register' %}">Sign Up</a></li>
+                    <li><a class="blackBack" href="{% url 'auth_login' %}">Log In</a></li>
+                    <li><a class="blackBack" href="{% url 'registration_register' %}">Sign Up</a></li>
                 {% endif %}
             </ul>
 
