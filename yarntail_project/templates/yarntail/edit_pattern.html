@@ -11,7 +11,7 @@
     </head>
 
 
-    <body onload="adjust_axis()">
+    <body onload="convert_string_edit('{{ pattern.design }}')">
 
     <div role="tabpanel">
 
@@ -48,7 +48,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <button type="button" class="btn btn-primary btn-lg btn-block"
-                                                    onclick="check_axis_input()">Adjust Axis
+                                                    onclick="adjust_axis()">Adjust Axis
                                             </button>
                                         </div>
                                     </div>
@@ -164,17 +164,6 @@
                         <script>
                         var copylist = []
                         </script>
-						 <script type="text/javascript">
-        function check_axis_input(){
-		    var x = document.getElementById("xInput").value;
-			var y = document.getElementById("yInput").value;
-		    if (typeof x === 'number' && typeof y === 'number'){
-			    adjust_axis();
-			}else{
-			    alert("Axis size input must be a number between 1 and 99.");
-			}
-        }		
-     </script>
                     </div>
                 </div>
             </div>
@@ -183,7 +172,7 @@
 
             <!-- SAVE AND SUBMIT TAB -->
             <div role="tabpanel" class="tab-pane" id="save_and_submit">
-                <form action="{% url "add_pattern" %}" name="pattern-form" id="pattern-form" method="post" class="ajax">
+                <form action="{% url 'edit_pattern' username_slug pattern_slug %}" name="pattern-form" id="pattern-form" method="post" class="ajax">
                     {% csrf_token %}
 
                     <div class="row">
@@ -191,8 +180,7 @@
 
                             <div class="form-group">
                                 <label for="name"><h3>Give your design a name:</h3></label>
-                                <input type="text" name="title" class="form-control" id="title"
-                                       placeholder="Enter name...">
+                                <input type="text" name="title" class="form-control" id="title" value="{{ pattern.title }}">
                             </div>
                             <h3>Select a difficulty for your design:</h3>
 
@@ -215,8 +203,7 @@
 
                             <div class="form-group">
                                 <label for="description"><h3>Write a short description about your design:</h3></label>
-                                <textarea name="description" rows="10" class="form-control" id="description"
-                                          placeholder="Enter description..."></textarea>
+                                <textarea name="description" rows="10" class="form-control" id="description">{{ pattern.description }}</textarea>
                             </div>
 
                             <div class="col-md-6">

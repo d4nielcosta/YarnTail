@@ -242,3 +242,70 @@ function convert_string(string){
 		    }
 			document.getElementById("pattern_grid").innerHTML = text;
 	}
+	
+	
+function convert_string_edit(string){
+    var list = string.split(" ");
+	var new_list = [];
+    var xmax = 1;
+	var ymax = 1;
+    for (var i = 0; i <= list.length-2; i++){
+		if (i%4 == 0){
+		    xmax = Number(list[i]);
+		}
+		if (i%4 == 1){
+		    ymax = Number(list[i]);
+		}
+		if (i%4 == 2){
+		    new_list.push(String(list[i]));
+		}
+		if (i%4 == 3){
+		    new_list.push(String(list[i]));
+		}
+	}
+	var text = "";
+	var iter = 0;
+	for (var y = 0; y <= ymax; y++){
+	    if (y<1){
+				text += '<td></td>';
+				for (var x = 1; x <= xmax; x++) {
+					text += '<td><b>' + x + '</b></td>';
+					}
+		}else{
+				text += '<tr><td><b>' + y + '</b></td>';
+				for (x = 1; x <= xmax; x++) {
+					var stitch = new_list[iter];
+				    var colour = new_list[iter+1];
+					var imgID = x + " " + y;
+					iter += 2;
+					text += '<td><img  class="notselected" ';
+					text += 'id="' + imgID + '" ';
+					var img_src = "";
+					switch(stitch){
+						case "drop":
+							img_src = "/static/images/drop.png";
+							break;
+						case "drop_white":
+							img_src = "/static/images/drop_white.png";
+							break;
+						case "purl":
+							img_src = "/static/images/purl.png";
+							break;
+						case "purl_white":
+							img_src = "/static/images/purl_white.png";
+							break;
+						case "knit":
+							img_src = "/static/images/knit.png";
+							break;
+					    }
+					text += 'src="' + img_src + '" ';
+					text += 'style="background-color:#' + colour;
+					text += '" alt="stitch" height="24" width="24" ondrop="drop(event)" ondragover="allowDrop(event)" onclick="change_stitch';
+					text += "('" + imgID + "')" + '" alt="stitch"></td>';
+					}
+				text += '</tr>';
+				}
+		    }
+			document.getElementById("grid").innerHTML = text;
+	}
+	
