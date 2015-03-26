@@ -7,7 +7,7 @@ urlpatterns = patterns('',
                        url(r'^$', views.index_popular, name='index'),
 
                        #search
-                       url(r'^search/$', yarntail.views.search, name='search'),
+                       url(r'^search/$', yarntail.views.search_autocomplete, name='search'),
                        url(r'^search_results/$', yarntail.views.search_results, name='search_results'),
                        url(r'^search_results/(?P<query>[\w\-+]+)$', yarntail.views.search_results,
                            name='search_results'),
@@ -19,7 +19,7 @@ urlpatterns = patterns('',
                        url(r'^index/all/$', views.index_all, name='index_all'),
 
                        url(r'^about_us/$', views.about, name='about'),
-                       url(r'^search/(?P<query_slug>[\w\-]+)/$', views.search, name='search'),
+                       url(r'^search/(?P<query_slug>[\w\-]+)/$', views.search_autocomplete, name='search'),
 
                        # Profile Related
                        url(r'^profile/edit/$', views.edit_profile, name='edit_profile'),

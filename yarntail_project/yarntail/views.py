@@ -7,7 +7,7 @@ from django.core.context_processors import csrf
 from django.core.urlresolvers import reverse
 from django.forms import model_to_dict
 from django.shortcuts import render, redirect, render_to_response
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpRequest
 from forms import UserForm, UserProfileForm, PatternForm
 from django.shortcuts import render, redirect
 from forms import UserForm, UserProfileForm, PatternForm, CommentForm
@@ -237,7 +237,18 @@ def upload_instructions(request):
     return render(request, 'yarntail/upload_instructions.html')
 
 
-def search(request):
+def get_patterns(max_results=0, contains=''):
+    pattern_list = []
+    if contains:
+        pattern_list = Pattern.objects.filter(title__contains=contains)
+
+    if max_results > 0:
+        if len(pattern_list) > max_results:
+            pattern_list = pattern_list[:max_results]
+    return pattern_list
+
+
+def search_autocomplete(request):#make compatible with users
     # if request.method == "POST":
     # search_text = request.POST['search_text']
     # else:
@@ -263,19 +274,6 @@ def search(request):
         context_dict['patterns'] = patterns
 
     return render(request, "yarntail/base.html", context_dict)
-    #return HttpResponse(context_dict)
-
-
-def get_patterns(max_results=0, contains=''):
-    pattern_list = []
-    if contains:
-        pattern_list = Pattern.objects.filter(title__contains=contains)
-
-    if max_results > 0:
-        if len(pattern_list) > max_results:
-            pattern_list = pattern_list[:max_results]
-    return pattern_list
-
 
 def search_results(request, query=None):
     context_dict = {}
@@ -283,7 +281,7 @@ def search_results(request, query=None):
     users = []
     p=None
     u=None
-
+    query = request.GET.urlencode().replace("search=", "")
     if query:
         query_results = SearchQuerySet().filter(content_auto=query)
 
