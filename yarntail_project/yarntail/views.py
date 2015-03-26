@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from django.forms import model_to_dict
 from django.shortcuts import render, redirect, render_to_response
 from django.http import JsonResponse, HttpRequest
+from django.views.decorators.csrf import csrf_exempt
 from forms import UserForm, UserProfileForm, PatternForm
 from django.shortcuts import render, redirect
 from forms import UserForm, UserProfileForm, PatternForm, CommentForm
@@ -247,35 +248,62 @@ def get_patterns(max_results=0, contains=''):
             pattern_list = pattern_list[:max_results]
     return pattern_list
 
-
+@csrf_exempt
 def search_autocomplete(request):#make compatible with users
-    # if request.method == "POST":
-    # search_text = request.POST['search_text']
-    # else:
-    # search_text = ''
-    # patterns = get_patterns(max_results=10, contains=search_text)
-    #
-    # pat_title = ""
-    # pat_slug = ""
-    # pat_user = ""
-    # pat_links = "<br />"
-    # for pat in patterns:
-    #     pat_slug = pat.slug
-    #     pat_user = pat.user.user_profile.slug
-    #     pat_title = pat.title
-    #     #this is appending onto the current link for some reason.
-    #     pat_links += '<li><a href="pattern/' + pat_user + '/' + pat_slug + '/">' + pat_title + '</a><br />'
-    context_dict = {}
+
+    final_results = {}
     patterns = []
-    query_results = SearchQuerySet().autocomplete(content_auto=request.POST.get('search_text', ''))
+    users = []
+    p=None
+    u=None
+    query = request.POST['search_text']
 
-    for result in query_results:
-        patterns.append(Pattern.objects.get(pk=result.pk))
-        context_dict['patterns'] = patterns
 
-    return render(request, "yarntail/base.html", context_dict)
 
-def search_results(request, query=None):
+    if query:
+        # query_results = SearchQuerySet().filter(content_auto=query)
+        query_results = SearchQuerySet().autocomplete(content_auto=query)
+        for result in query_results:
+            try:
+                p = Pattern.objects.get(pk=result.pk)
+                if query.lower() not in p.lower():
+                    p = None
+            except:
+                pass
+
+            try:
+                u = UserProfile.objects.get(pk=result.pk)
+                if query.lower() not in u.user.username.lower():
+                    u = None
+            except:
+                pass
+
+            if u != None:
+                users.append({'name': u.user.username, 'url': u.get_absolute_url()})
+            if p != None:
+                patterns.append({'title': p.title, 'url': p.get_absolute_url()})
+            u = p = None
+
+        print "hello"
+        print patterns
+        print users
+
+
+        # patterns.append(users)
+
+        final_results['patterns'] = patterns
+        final_results['users'] = users
+        print final_results
+        # context_dict['users'] = users
+        # context_dict['patterns'] = patterns
+
+
+        #create list of dictionaries, each holding a pattern/users title and .get_abs......
+
+    return JsonResponse(final_results, safe=False)
+    # return JsonResponse(serializers.serialize("json", final_results), safe=False)
+
+def search_results(request):
     context_dict = {}
     patterns = []
     users = []

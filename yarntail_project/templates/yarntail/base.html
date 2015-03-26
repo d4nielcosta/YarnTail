@@ -67,10 +67,7 @@
             <!--Search-->
 
 
-
-        <form action="{% url 'search_results' %}" >
-
-
+            <form action="{% url 'search_results' %}">
                 <div class="col-sm-3 col-md-3 pull-center">
                     <div class="input-group">
                         <input type="text" id="search" name="search" class="form-control"
@@ -87,8 +84,7 @@
                     </div>
                 </div>
 
-        </form>
-
+            </form>
 
 
         </div>
@@ -108,9 +104,12 @@
             <a href="{% url 'upload_instructions' %}"> Upload Instructions </a><br/>
             <a href="{% url 'pattern_instructions' %}"> Pattern Instructions </a><br/>
 
-            {% for pattern in patterns %}
-                {{ pattern }}
-            {% endfor %}
+
+            <!--temp autocomplete results-->
+            <div>
+                <ul id="results"></ul>
+            </div>
+
 
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

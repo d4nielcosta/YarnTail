@@ -7,10 +7,10 @@ urlpatterns = patterns('',
                        url(r'^$', views.index_popular, name='index'),
 
                        #search
-                       url(r'^search/$', yarntail.views.search_autocomplete, name='search'),
+                       url(r'^search/$', yarntail.views.search_autocomplete, name='search_autocomplete'),
                        url(r'^search_results/$', yarntail.views.search_results, name='search_results'),
-                       url(r'^search_results/(?P<query>[\w\-+]+)$', yarntail.views.search_results,
-                           name='search_results'),
+                       # url(r'^search_results/(?P<query>[\w\-+]+)$', yarntail.views.search_results,
+                       #     name='search_results'),#search works without this, as there is now no need for <query>
 
 
                        url(r'^index/$', views.index_popular, name='index'),
