@@ -8,20 +8,20 @@
 <div class="page-header">
     <h1>{{pattern.title}} <a href="{{ u.user_profile.get_absolute_url }}"> <i style="font-size:80%">@{{ u.username }}</i></a></h1>
 
-    <div> <br/>
-        <h4>Description</h4>
-        <p>{{ pattern.description }}</p>
-        <br/>
-
-    </div>
+<br \>
 
 	<div class="row">
 	    <div class="col-md-6">
-	        <table id="pattern_grid" class="flexy"></table>
+	        <table id="pattern_grid" class="flexy" ></table>
 	    </div>
 	</div>
 
-
+    <div>
+        <h4>Description</h4>
+        <p>{{ pattern.description }}</p>
+        <br>
+        <h4>Difficulty:</h4> <p>{{ pattern.difficulty }}</p>
+    </div>
 </div>
 
 

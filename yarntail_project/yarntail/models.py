@@ -35,7 +35,15 @@ class Pattern(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(unique=True)
     design = models.CharField(max_length=100000, default="empty pattern")
-    difficulty = models.CharField(default="Easy", max_length=10)
+    HARD = 'Hard'
+    MEDIUM = 'Medium'
+    EASY = 'Easy'
+    DIFFICULTY_CHOICES = (
+        (HARD, 'Hard'),
+        (MEDIUM, 'Medium'),
+        (EASY, 'Easy'),
+    )
+    difficulty = models.CharField(default="Easy", choices=DIFFICULTY_CHOICES, max_length=10)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
