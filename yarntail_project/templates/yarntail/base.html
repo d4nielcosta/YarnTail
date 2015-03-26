@@ -50,8 +50,6 @@
 
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-
-
                 {% if user.is_authenticated %}
                     <li><a class="blackBack" href="{% url 'add_pattern' %}">New Pattern</a></li>
                     <li><a class="blackBack" href="{% url 'profile' user.username %}">Profile</a></li>
@@ -63,9 +61,7 @@
                 {% endif %}
             </ul>
 
-
             <!--Search-->
-
 
             <form action="{% url 'search_results' %}">
                 <div class="col-sm-3 col-md-3 pull-center">
@@ -100,7 +96,6 @@
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar" style="text-align: center">
 
-
             <div>
                 <img src="{% static 'images/LogoTest2.jpg' %}" alt="YarnTail Logo"
                      style="max-width:100%;max-height:100%;margin:auto;display:block"/>
@@ -108,13 +103,6 @@
             </div>
             <a href="{% url 'upload_instructions' %}"> Upload Instructions </a><br/>
             <a href="{% url 'pattern_instructions' %}"> Pattern Instructions </a><br/>
-
-
-            <!--temp autocomplete results-->
-            <div>
-                <ul id="results"></ul>
-            </div>
-
 
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

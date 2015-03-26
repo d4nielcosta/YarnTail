@@ -261,7 +261,7 @@ def search_autocomplete(request):#make compatible with users
 
 
     if query:
-        # query_results = SearchQuerySet().filter(content_auto=query)
+
         query_results = SearchQuerySet().autocomplete(content_auto=query)
         for result in query_results:
             try:
@@ -284,24 +284,11 @@ def search_autocomplete(request):#make compatible with users
                 patterns.append({'title': p.title, 'url': p.get_absolute_url()})
             u = p = None
 
-        print "hello"
-        print patterns
-        print users
-
-
-        # patterns.append(users)
-
         final_results['patterns'] = patterns
         final_results['users'] = users
-        print final_results
-        # context_dict['users'] = users
-        # context_dict['patterns'] = patterns
-
-
-        #create list of dictionaries, each holding a pattern/users title and .get_abs......
 
     return JsonResponse(final_results, safe=False)
-    # return JsonResponse(serializers.serialize("json", final_results), safe=False)
+
 
 def search_results(request):
     context_dict = {}

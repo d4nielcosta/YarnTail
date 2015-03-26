@@ -24,27 +24,44 @@
 
         <div role="tabpanel" class="tab-pane active" id="patterns" style="nopadding">
             <div>
-
                 {% if patterns %}
                     {% for pattern in patterns %}
-                        <a href="{{ pattern.get_absolute_url }}">{{ pattern }} </a> by @{{pattern.user}}<br/>
+                        <li class="list-group-item"><a href="{{ pattern.get_absolute_url }}"><strong><i>Pattern
+                            - </i></strong>{{ pattern }}</a> by
+                            @{{ pattern.user }}
+                            <hr>
+                            <p style="color: black;">{{ pattern.description }} <br/>
+                                <br/><strong>Views: {{ pattern.views }} || {{ pattern.creation_date }}</strong></p></li>
                     {% endfor %}
                 {% else %}
-                    <li>No patterns match your search</li>
+                    <li class="list-group-item"> No patterns match your search.</li>
                 {% endif %}
-
             </div>
         </div>
+
 
         <div role="tabpanel" class="tab-pane active" id="users" style="nopadding">
 
             <div>
                 {% if users %}
                     {% for user in users %}
-                        <a href="{{ user.get_absolute_url }}">{{ user }} <br/>
+                        <li class="list-group-item">
+                        <a id="float" href="{{ user.get_absolute_url }}"><strong><i>@</i></strong>{{ user }}</a>
+                        <hr>
+                        <p style="color: black;">
+
+
+                        <strong><u>Patterns</u><br><br></strong>
+                            {% for pattern in user.user.patterns.all %}
+                                        <strong>{{ pattern.title }}</strong>
+                                {% if not forloop.last %}|| {% endif %}
+                            {% endfor %}
+
+
+
                     {% endfor %}
                 {% else %}
-                    <li>No users match your search</li>
+                    <li class="list-group-item"> No users match your search.</li>
                 {% endif %}
 
             </div>

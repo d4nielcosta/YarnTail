@@ -4,34 +4,6 @@ from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 import ast
 
-# class ListField(models.TextField):
-# __metaclass__ = models.SubfieldBase
-#     description = "Stores a python list"
-#
-#     def __init__(self, *args, **kwargs):
-#         super(ListField, self).__init__(*args, **kwargs)
-#
-#     def to_python(self, value):
-#         if not value:
-#             value = []
-#
-#         if isinstance(value, list):
-#             return value
-#
-#         return ast.literal_eval(value)
-#
-#     def get_prep_value(self, value):
-#         if value is None:
-#             return value
-#
-#         return unicode(value)
-#
-#     def value_to_string(self, obj):
-#         value = self._get_val_from_obj(obj)
-#         return self.get_db_prep_value(value)
-
-# class ListModel(models.Model):
-#     test_list = ListField()
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, related_name='user_profile')
@@ -45,7 +17,7 @@ class UserProfile(models.Model):
         self.slug = slugify(self.user.username)
         super(UserProfile, self).save(*args, **kwargs)
 
-    # Override the __unicode__() method to return out something meaningful!
+
     def __unicode__(self):
         return self.user.username
 
@@ -55,7 +27,7 @@ class UserProfile(models.Model):
 
 class Pattern(models.Model):
     title = models.CharField(max_length=128,
-                             unique=True)  # in forms, prepend username before submitting "gertrude's rainbow gloves"
+                             unique=True)
     user = models.ForeignKey(User, related_name='patterns')
     likes = models.PositiveIntegerField(default=0)
     views = models.PositiveIntegerField(default=0)

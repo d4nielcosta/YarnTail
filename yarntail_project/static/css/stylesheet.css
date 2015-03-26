@@ -24,9 +24,9 @@ p, li {
     float: left;
     }
 
-#centre {
-    float:center;
-    }
+/*#centre {*/ /*doesnt do anything*/
+    /*float: center;*/
+    /*}*/
 
 #right {
     float: right;
