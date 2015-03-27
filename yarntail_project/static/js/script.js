@@ -128,14 +128,12 @@ function copy(){
 			if (document.getElementById(id).getAttribute("class") == "selected"){
 				document.getElementById(id).setAttribute("class", "copied");
 				copylist.push(String(id));
-				console.log(copylist);
 			}
 		}
 	}
 }
 
 function paste(list){
-console.log(list);
 	for (var y = 1; y <= document.getElementById("yInput").value; y++) {
 		for (var x = 1; x <= document.getElementById("xInput").value; x++) {
 			id = x + ' ' + y;
@@ -150,7 +148,7 @@ console.log(list);
 	base = base.split(" ");
 	var xtrans = Number(base[0])-Number(copied_base[0]);
 	var ytrans = Number(base[1])-Number(copied_base[1]);
-	for (var i = 1; i<list.length; i++){
+	for (var i = 0; i<list.length; i++){
 		console.log(cell);
 		var cell = String(list[i]);
 		var colour = document.getElementById(cell).getAttribute("style");
