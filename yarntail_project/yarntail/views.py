@@ -230,8 +230,8 @@ def add_pattern(request):
         return redirect(index_popular(request))
 
 
-def pattern_instructions(request):
-    return render(request, 'yarntail/pattern_instructions.html')
+def what_is_yarntail(request):
+    return render(request, 'yarntail/what_is_yarntail.html')
 
 
 def upload_instructions(request):

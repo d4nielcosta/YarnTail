@@ -29,7 +29,7 @@ urlpatterns = patterns('',
                        #Pattern Related
                        url(r'^pattern/(?P<username_slug>[\w\-]+)/(?P<pattern_slug>[\w\-]+)/$', views.pattern,
                            name='pattern'),
-                       url(r'^pattern_instructions/$', views.pattern_instructions, name='pattern_instructions'),
+                       url(r'^what_is_YarnTail/$', views.what_is_yarntail, name='what_is_yarntail'),
                        url(r'^upload_instructions/$', views.upload_instructions, name='upload_instructions'),
                        url(r'^add_pattern/$', views.add_pattern, name='add_pattern'),
                        url(r'^edit_pattern/(?P<username_slug>[\w\-]+)/(?P<pattern_slug>[\w\-]+)/$', views.edit_pattern, name='edit_pattern'),
