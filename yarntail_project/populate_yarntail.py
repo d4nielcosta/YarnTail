@@ -73,6 +73,7 @@ def populate():
     add_comment(user="Hulk", pattern_slug="incredible-shorts", comment="Glad you liked them Wolverine :)")
 
 def add_user(username, password, first_name, last_name, email, dob):
+    print username
     user = User.objects.create_user(username, email, password)
     user.save()
 
