@@ -123,6 +123,15 @@ tr {
 
 .flexy {
 	display: block;
+	height: 528px;
+	width: 528px;
+	overflow: auto;
+	border-collapse: collapse;
+	table-layout: fixed;
+    }
+
+.flexy2 {
+	display: block;
 	height: 400px;
 	width: 1000px;
 	overflow: auto;
