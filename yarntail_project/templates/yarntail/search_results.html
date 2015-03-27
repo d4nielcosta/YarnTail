@@ -26,8 +26,9 @@
             <div>
                 {% if patterns %}
                     {% for pattern in patterns %}
-                        <li class="list-group-item"><a href="{{ pattern.get_absolute_url }}">{{ pattern }}</a> by
-                            @{{ pattern.user }}
+                        <li class="list-group-item">
+                            <strong><a href="{{ pattern.get_absolute_url }}">{{ pattern }}</a></strong>
+                                by <a href="{{ pattern.user.user_profile.get_absolute_url }}">@{{ pattern.user }}</a>
                             <hr>
                             <p style="color: black;">{{ pattern.description }} <br/>
                                 <br/><strong>Views: {{ pattern.views }} || {{ pattern.creation_date }}</strong></p></li>
@@ -35,7 +36,6 @@
                     {% endfor %}
                 {% else %}
                     <li class="list-group-item"> No patterns match your search.</li>
-
                 {% endif %}
             </div>
         </div>
@@ -47,19 +47,18 @@
                     {% for user in users %}
 
                         <li class="list-group-item">
-                            <a id="float" href="{{ user.get_absolute_url }}"><strong><i>@</i></strong>{{ user }}</a>
+                            <strong><a id="float" href="{{ user.get_absolute_url }}"><strong><i>@</i></strong>{{ user }}</a></strong>
                             <hr>
                             <p style="color: black;">
 
-                                <strong><u>Patterns</u><br><br></strong>
+                                <strong>Patterns:<br><br></strong>
                                 {% for pattern in user.user.patterns.all %}
-                                    <strong>{{ pattern.title }}</strong>
+                                    <a href="{{ pattern.get_absolute_url }}">{{ pattern.title }}</a>
                                     {% if not forloop.last %}|| {% endif %}
                                 {% endfor %}
                         </li>
                     {% endfor %}
                 {% else %}
-                    <br>
                     <li class="list-group-item"> No users match your search.</li>
                 {% endif %}
 
