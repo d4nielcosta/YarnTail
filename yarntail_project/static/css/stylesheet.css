@@ -116,6 +116,11 @@ tr {
 	border-collapse: collapse;
     }
 
+.list-group-item {
+
+    margin: 1em 0;
+}
+
 .flexy {
 	display: block;
 	height: 400px;

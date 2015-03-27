@@ -30,15 +30,15 @@
                             @{{ pattern.user }}
                             <hr>
                             <p style="color: black;">{{ pattern.description }} <br/>
-                                <br/><strong>Views: {{ pattern.views }} || {{ pattern.creation_date }}</strong></p></li><br>
+                                <br/><strong>Views: {{ pattern.views }} || {{ pattern.creation_date }}</strong></p></li>
+
                     {% endfor %}
                 {% else %}
                     <li class="list-group-item"> No patterns match your search.</li>
-                    <br>
+
                 {% endif %}
             </div>
         </div>
-
 
         <div role="tabpanel" class="tab-pane active" id="users" style="nopadding">
 
@@ -47,18 +47,16 @@
                     {% for user in users %}
 
                         <li class="list-group-item">
-                        <a id="float" href="{{ user.get_absolute_url }}"><strong><i>@</i></strong>{{ user }}</a>
-                        <hr>
-                        <p style="color: black;">
+                            <a id="float" href="{{ user.get_absolute_url }}"><strong><i>@</i></strong>{{ user }}</a>
+                            <hr>
+                            <p style="color: black;">
 
-                        <strong><u>Patterns</u><br><br></strong>
-                            {% for pattern in user.user.patterns.all %}
-                                        <strong>{{ pattern.title }}</strong>
-                                {% if not forloop.last %}|| {% endif %}
-                            {% endfor %}
+                                <strong><u>Patterns</u><br><br></strong>
+                                {% for pattern in user.user.patterns.all %}
+                                    <strong>{{ pattern.title }}</strong>
+                                    {% if not forloop.last %}|| {% endif %}
+                                {% endfor %}
                         </li>
-<br>
-
                     {% endfor %}
                 {% else %}
                     <br>
