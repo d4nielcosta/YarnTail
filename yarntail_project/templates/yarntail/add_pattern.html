@@ -48,7 +48,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <button type="button" class="btn btn-primary btn-lg btn-block"
-                                                    onclick="check_axis_input()">Adjust Axis
+                                                    onclick="adjust_axis()">Adjust Axis
                                             </button>
                                         </div>
                                     </div>
@@ -164,17 +164,6 @@
                         <script>
                         var copylist = []
                         </script>
-						 <script type="text/javascript">
-        function check_axis_input(){
-		    var x = document.getElementById("xInput").value;
-			var y = document.getElementById("yInput").value;
-		    if (typeof x === 'number' && typeof y === 'number'){
-			    adjust_axis();
-			}else{
-			    alert("Axis size input must be a number between 1 and 99.");
-			}
-        }		
-     </script>
                     </div>
                 </div>
             </div>
@@ -190,7 +179,7 @@
                         <div class="col-md-6">
 
                             <div class="form-group">
-                                <label for="name"><h3>Give your design a name:</h3></label>
+                                <label for="title"><h3>Give your design a name:</h3></label>
                                 <input type="text" name="title" class="form-control" id="title"
                                        placeholder="Enter name...">
                             </div>
