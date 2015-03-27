@@ -2,7 +2,12 @@ a:link {
   font-size: 120%;
    }
 
-#blackBack {
+p, li {
+   font-family: "Verdana";
+   font-size: 14px;
+}
+
+.blackBack {
   background-color: black;
   }
 
@@ -19,18 +24,19 @@ a:link {
     float: left;
     }
 
-#centre {
-    float:center;
-    }
+/*#centre {*/ /*doesnt do anything*/
+    /*float: center;*/
+    /*}*/
 
 #right {
     float: right;
     }
 
-p, li {
-    font-family: "Verdana";
-    font-size: 14px;
-}
+#blackBack {
+  background-color: black;
+  }
+
+
 
 .thumbnail {
 float: left;
@@ -90,4 +96,40 @@ tr {
 
 .copied{
 	border: 1px dashed #C91111;
+    }
+
+
+td {
+	padding: 0px;
+	border: 1px solid #d3d3d3;
+	min-width: 24px;
+	max-width: 24px;
+	width: 24px;
+	height: 24px;
+	text-align: center;
+	white-space: nowrap;
+	border-collapse: collapse;
+    }
+
+tr {
+	border: 1px solid #d3d3d3;
+	border-collapse: collapse;
+    }
+
+.list-group-item {
+
+    margin: 1em 0;
+}
+
+.flexy {
+	display: block;
+	height: 400px;
+	width: 1000px;
+	overflow: auto;
+	border-collapse: collapse;
+	table-layout: fixed;
+    }
+
+.standard {
+	border: 1px solid #d3d3d3;
     }

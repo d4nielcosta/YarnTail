@@ -22,12 +22,12 @@
         {% for pattern in latest_patterns %}
         <li class="list-group-item"><a href="{{pattern.get_absolute_url}}">
             {{ pattern }} -- @{{ pattern.user }}</a>
-            <HR WIDTH="50%" align="left">
+            <hr>
             <p style="color: black;">{{ pattern.description }} <br/>
                 <br/><strong>Views: {{pattern.views }} || {{pattern.creation_date }}</strong></p>
         </li>
         {% endfor %}
-    </ul>
+    </ul> <br/>
     {% else %}
     <p>Oops! Sorry but looks like there aren't any patterns available.</p>
     {% endif %}

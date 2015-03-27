@@ -37,21 +37,21 @@
                                 <div class="col-md-6">
                                     <h4>X-axis size:</h4>
                                     <input type="number" class="form-control" value="20" id="xInput">
-                                </div>
-                                <div class="col-md-6">
-                                    <h4>Y-axis size:</h4>
-                                    <input type="number" class="form-control" value="20" id="yInput">
-
                                     <div class="row">
                                         </br>
-                                        <div class="col-md-6">
-                                        </div>
-                                        <div class="col-md-6">
+
+                                        <div class="col-md-8">
                                             <button type="button" class="btn btn-primary btn-lg btn-block"
                                                     onclick="adjust_axis()">Adjust Axis
                                             </button>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h4>Y-axis size:</h4>
+                                    <input type="number" class="form-control" value="20" id="yInput">
+
+
                                 </div>
                             </form>
 
@@ -164,6 +164,7 @@
                         <script>
                         var copylist = []
                         </script>
+
                     </div>
                 </div>
             </div>
@@ -172,7 +173,7 @@
 
             <!-- SAVE AND SUBMIT TAB -->
             <div role="tabpanel" class="tab-pane" id="save_and_submit">
-                <form action="{% url "add_pattern" %}" name="pattern-form" id="pattern-form" method="post" class="ajax">
+                <form action="{% url 'add_pattern' %}" name="pattern-form" id="pattern-form" method="post" class="ajax">
                     {% csrf_token %}
 
                     <div class="row">
@@ -186,15 +187,15 @@
                             <h3>Select a difficulty for your design:</h3>
 
                             <div class="radio">
-                                <input type="radio" name="difficulty" id="radiohard" value="option1">
+                                <input type="radio" name="difficulty" id="radiohard" value="Hard">
                                 <label for="radiohard">Hard</label>
                             </div>
                             <div class="radio">
-                                <input type="radio" name="difficulty" id="radiomedium" value="option2"
+                                <input type="radio" name="difficulty" id="radiomedium" value="Medium">
                                 <label for="radiomedium">Medium</label>
                             </div>
                             <div class="radio">
-                                <input type="radio" name="difficulty" id="radioeasy" value="option3" checked>
+                                <input type="radio" name="difficulty" id="radioeasy" value="Easy" checked>
                                 <label for="radioeasy">Easy</label>
                             </div>
 
@@ -219,6 +220,8 @@
                                 </button>
                             </div>
                         </div>
+                        </div>
+                        </form>
                     </div>
 
             </div>

@@ -7,7 +7,8 @@ from django.core.context_processors import csrf
 from django.core.urlresolvers import reverse
 from django.forms import model_to_dict
 from django.shortcuts import render, redirect, render_to_response
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpRequest
+from django.views.decorators.csrf import csrf_exempt
 from forms import UserForm, UserProfileForm, PatternForm
 from django.shortcuts import render, redirect
 from forms import UserForm, UserProfileForm, PatternForm, CommentForm
@@ -175,10 +176,37 @@ def pattern(request, username_slug, pattern_slug):
     return render(request, 'yarntail/pattern.html', context_dict)
 
 
+def edit_pattern(request, username_slug, pattern_slug):
+    c = {}
+    context_dict = {}
+    if request.user.is_authenticated():
+        pattern = Pattern.objects.get(slug=pattern_slug)
+        form = PatternForm(request.POST, instance=pattern)
+        if request.method == 'POST':
+            context_dict['csrf_token'] = c.update(csrf(request))
+            form = PatternForm(request.POST, instance=pattern)
+            print "user authenticated"
+            if form.is_valid():
+                print "form valid"
+                patternform = form.save(commit=False)
+                patternform.user = User.objects.get(id=request.user.id)
+                patternform.save()
+            else:
+                print form.errors
+            return redirect('pattern', pattern.user, pattern.slug)
+        context_dict['pattern_form'] = form
+        context_dict['pattern'] = pattern
+        context_dict['u'] = request.user
+        return render(request, 'yarntail/edit_pattern.html', context_dict)
+    else:
+        return redirect(index_popular(request))
+
+
 @login_required
 def add_pattern(request):
     c = {}
     context_dict = {}
+    pattern = None
     if request.user.is_authenticated():
         form = PatternForm(request.GET)
         if request.method == 'POST':
@@ -188,54 +216,26 @@ def add_pattern(request):
             if form.is_valid():
                 pattern = form.save(commit=False)
                 pattern.user = User.objects.get(id=request.user.id)
-                print "form is valid"
                 pattern.save()
 
             else:
                 print form.errors
-                return HttpResponse("Oh Shiz, yo pattern is dope. (And by that we mean the form is not valid.)")
-            return redirect('pattern', pattern.user, pattern.slug)
+            try:
+                return redirect('pattern', pattern.user, pattern.slug)
+            except:
+                return handle404(request)
         context_dict['pattern_form'] = form
         return render(request, 'yarntail/add_pattern.html', context_dict)
     else:
         return redirect(index_popular(request))
 
 
-def pattern_instructions(request):
-    return render(request, 'yarntail/pattern_instructions.html')
+def what_is_yarntail(request):
+    return render(request, 'yarntail/what_is_yarntail.html')
 
 
 def upload_instructions(request):
     return render(request, 'yarntail/upload_instructions.html')
-
-
-def search(request):
-    # if request.method == "POST":
-    # search_text = request.POST['search_text']
-    # else:
-    # search_text = ''
-    # patterns = get_patterns(max_results=10, contains=search_text)
-    #
-    # pat_title = ""
-    # pat_slug = ""
-    # pat_user = ""
-    # pat_links = "<br />"
-    # for pat in patterns:
-    #     pat_slug = pat.slug
-    #     pat_user = pat.user.user_profile.slug
-    #     pat_title = pat.title
-    #     #this is appending onto the current link for some reason.
-    #     pat_links += '<li><a href="pattern/' + pat_user + '/' + pat_slug + '/">' + pat_title + '</a><br />'
-    context_dict = {}
-    patterns = []
-    query_results = SearchQuerySet().autocomplete(content_auto=request.POST.get('search_text', ''))
-
-    for result in query_results:
-        patterns.append(Pattern.objects.get(pk=result.pk))
-        context_dict['patterns'] = patterns
-
-    return render(request, "yarntail/base.html", context_dict)
-    #return HttpResponse(context_dict)
 
 
 def get_patterns(max_results=0, contains=''):
@@ -248,14 +248,55 @@ def get_patterns(max_results=0, contains=''):
             pattern_list = pattern_list[:max_results]
     return pattern_list
 
+@csrf_exempt
+def search_autocomplete(request):#make compatible with users
 
-def search_results(request, query=None):
+    final_results = {}
+    patterns = []
+    users = []
+    p=None
+    u=None
+    query = request.POST['search_text']
+
+
+
+    if query:
+
+        query_results = SearchQuerySet().autocomplete(content_auto=query)
+        for result in query_results:
+            try:
+                p = Pattern.objects.get(pk=result.pk)
+                if query.lower() not in p.lower():
+                    p = None
+            except:
+                pass
+
+            try:
+                u = UserProfile.objects.get(pk=result.pk)
+                if query.lower() not in u.user.username.lower():
+                    u = None
+            except:
+                pass
+
+            if u != None:
+                users.append({'name': u.user.username, 'url': u.get_absolute_url()})
+            if p != None:
+                patterns.append({'title': p.title, 'url': p.get_absolute_url()})
+            u = p = None
+
+        final_results['patterns'] = patterns
+        final_results['users'] = users
+
+    return JsonResponse(final_results, safe=False)
+
+
+def search_results(request):
     context_dict = {}
     patterns = []
     users = []
     p=None
     u=None
-
+    query = request.GET.urlencode().replace("search=", "")
     if query:
         query_results = SearchQuerySet().filter(content_auto=query)
 
@@ -291,6 +332,7 @@ def search_results(request, query=None):
     return render(request, "yarntail/search_results.html", context_dict)
 
 
+
 def edit_pattern(request, username_slug, pattern_slug):
     c = {}
     context_dict = {}
@@ -321,22 +363,6 @@ def edit_pattern(request, username_slug, pattern_slug):
 
 
 
-    
-##    username = username_slug.lower()
-##    context_dict = {}
-##    profile = UserProfile.objects.get(slug=username)
-##    user = User.objects.get(user_profile=profile)
-##    pattern = Pattern.objects.get(user=user, slug=pattern_slug)
-##    comment = Comment.objects.filter(pattern=pattern).order_by('-creation_date')
-##
-##    pattern.save()
-##    
-##    context_dict['u'] = user
-##    context_dict['pattern'] = pattern
-##    context_dict['views'] = pattern.views
-##    context_dict['comment'] = comment
-##    
-##    return render(request, 'yarntail/edit_pattern.html', context_dict)
 
 def handle404(request):
     return render(request, "yarntail/page_not_found.html")
