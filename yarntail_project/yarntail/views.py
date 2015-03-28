@@ -311,6 +311,36 @@ def search_results(request):
 
 
 
+def edit_pattern(request, username_slug, pattern_slug):
+    c = {}
+    context_dict = {}
+    print "in edit pattern"
+    if request.user.is_authenticated():
+        print "request="+request
+        
+        ##pattern = Pattern.objects.get(
+        form = PatternForm(request.POST, instance=pattern)
+        if request.method == 'POST':
+            context_dict['csrf_token'] = c.update(csrf(request))
+            form = PatternForm(request.POST)
+
+            if form.is_valid():
+                pattern = form.save(commit=False)
+                pattern.user = User.objects.get(id=request.user.id)
+                print "form is valid"
+                pattern.save()
+
+            else:
+                print form.errors
+                return HttpResponse("Oh Shiz, yo pattern is dope. (And by that we mean the form is not valid.)")
+            return redirect('pattern', pattern.user, pattern.slug)
+        context_dict['pattern_form'] = form
+        return render(request, 'yarntail/add_pattern.html', context_dict)
+    else:
+        return redirect(index_popular(request))
+
+
+
 
 def handle404(request):
     return render(request, "yarntail/page_not_found.html")
