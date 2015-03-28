@@ -1,6 +1,10 @@
 $(function () {
 
-    $('#search').keyup(function () {
+    $('#search').keyup(function(e) {
+        var code = (e.keyCode || e.which);
+        if(code == 37 || code == 38 || code == 39 || code == 40) {
+            return;
+        }
         $.ajax({
             type: "POST",
             url: "/yarntail/search/",

@@ -1,34 +1,13 @@
-import json
-import re
-import user
+
 from django.contrib.auth.decorators import login_required
-from django.core import serializers
 from django.core.context_processors import csrf
-from django.core.urlresolvers import reverse
-from django.forms import model_to_dict
-from django.shortcuts import render, redirect, render_to_response
-from django.http import JsonResponse, HttpRequest
+from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from forms import UserForm, UserProfileForm, PatternForm
 from django.shortcuts import render, redirect
-from forms import UserForm, UserProfileForm, PatternForm, CommentForm
-from django.http import HttpResponse
-from django.db.models import Q
-from django.contrib.auth.models import User
+from forms import UserProfileForm, PatternForm, CommentForm
 from models import *
 from haystack.query import SearchQuerySet
 
-"""
-+Search
-+Trending
--Profile Pic
--Profile Name
--Likes
--Favorites
--Activity Feed
--Patterns Directory
--Upload New Pattern Link
-"""
 
 
 def index_popular(request):
@@ -159,7 +138,6 @@ def pattern(request, username_slug, pattern_slug):
 
     context_dict['comment'] = comment
 
-    # Add Comment
     if request.user.is_authenticated():
         form = CommentForm(request.GET)
         if request.method == 'POST':
@@ -298,7 +276,7 @@ def search_results(request):
     u=None
     query = request.GET.urlencode().replace("search=", "")
     if query:
-        query_results = SearchQuerySet().filter(content_auto=query)
+        query_results = SearchQuerySet().filter(text=query)
 
 
 
