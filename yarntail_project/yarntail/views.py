@@ -310,6 +310,5 @@ def search_results(request):
     return render(request, "yarntail/search_results.html", context_dict)
 
 
-
 def handle404(request):
     return render(request, "yarntail/page_not_found.html")
